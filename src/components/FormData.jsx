@@ -68,11 +68,30 @@ const surrogate=[
     type:"RC Base"
   },
 ]
+const matirialStatus=[
+  {
+    status:"Single"
+  },
+  {
+    status:"Married"
+  },
+  {
+    status:"Others"
+  },
+
+]
 const FormData = () => {
   const [dob, setDob] = useState(null);
+  const[initialStatus,setInitialStatus]=useState('');
+  const [spouseName,setSpouseName]=useState('');
 
   const handleDateChange = (date) => {
     setDob(date);
+  };
+
+  const handleMaritalStatusChange=(event)=>{
+   setInitialStatus(event.target.value);
+    setSpouseName('');
   };
 
   return (
@@ -270,9 +289,10 @@ const FormData = () => {
                     name="push-notifications"
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    required
                   />
                   <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
-                    Same as email
+                    female
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
@@ -283,11 +303,58 @@ const FormData = () => {
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
-                    No push notifications
+                    others
                   </label>
                 </div>
               
             </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="surrogate" className="block text-sm font-medium leading-6 text-gray-900">
+               Material Status
+              </label>
+              <div className="mt-2">
+              
+                    <select
+                    id="materialStatus"
+                    value={initialStatus}
+                    onChange={handleMaritalStatusChange}
+                    name="materialStatus"
+                    autoComplete="materialStatus"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                    required
+                    >
+                    
+                    <option>Single</option>
+                    <option>Married</option>
+                    <option>Others</option>
+                    </select>
+              </div>
+              
+              {initialStatus==='Married'&&(
+                 <div className="sm:col-span-4">
+                 <label htmlFor="spousename" className="block text-sm font-medium leading-6 text-gray-900">
+                   Spouse Name
+                 </label>
+                 <div className="mt-2">
+                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                     <input
+                       type="text"
+                       name="spousename"
+                       value={spouseName}
+                       onChange={(e)=>setSpouseName(e.target.value)}
+                       id="spousename"
+                       autoComplete="spousename"
+                       className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                       placeholder="Spouse Name"
+                       required
+                     />
+                   </div>
+                   </div>
+                 </div>
+              )}
+            </div>
+
 
             <div className="sm:col-span-4">
               <label htmlFor="mothername" className="block text-sm font-medium leading-6 text-gray-900">
