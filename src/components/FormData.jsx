@@ -5,6 +5,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const selectcard=[
   {
+    card:"Select"
+  },
+  {
     card:"Money Back"
   },
   {
@@ -47,6 +50,9 @@ const selectcard=[
 ]
 const surrogate=[
   {
+    type:"Select"
+  },
+  {
     type:"Salary Slip"
   },
   {
@@ -70,6 +76,9 @@ const surrogate=[
 ]
 const matirialStatus=[
   {
+    status:"Select"
+  },
+  {
     status:"Single"
   },
   {
@@ -80,6 +89,29 @@ const matirialStatus=[
   },
 
 ]
+const addressdetails=[
+  {
+    residence:"Select"
+  },
+  {
+    residence:"Owned"
+  },
+  {
+    residence:"Rented"
+  },
+  {
+    residence:"Company Provided"
+  },
+  {
+    residence:"Ancestral/Family"
+  },
+  {
+    residence:"PG Accomadation"
+  },
+  {
+    residence:"Resi Cum Office"
+  },
+]
 const FormData = () => {
   const [dob, setDob] = useState(null);
   const[initialStatus,setInitialStatus]=useState('');
@@ -87,6 +119,8 @@ const FormData = () => {
 
   const[qualificationStatus,setQualificationStatus]=useState('');
   const [others,setOthers]=useState('');
+
+  const [startDate, setStartDate] = useState(new Date());
 
   const[residentialAddress,setResidentialAddress]=useState({
     flat:'',
@@ -107,6 +141,10 @@ const FormData = () => {
   })
 
   const [copyAddress,setCopyAddress]=useState(false);
+
+  const[isSelfEmployed,setIsSelfEmployed]=useState(false);
+  const[isSalary,setIsSalary]=useState(false);
+  const[employmentType,setEmplomentType]=useState('');
 
 const handleResidentialAddressChange=(field,value)=>{
   setResidentialAddress((prevAddress)=>({
@@ -160,7 +198,7 @@ const handleCopyAddressChange=()=>{
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Fill this from properly
           </p>
-
+            <DatePicker className="mt-4" selected={startDate} onChange={(date) => setStartDate(date)}/>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
@@ -180,8 +218,6 @@ const handleCopyAddressChange=()=>{
                   />
                 </div>
               </div>
-
-              
             </div>
             <div className="sm:col-span-4">
               <label htmlFor="code" className="block text-sm font-medium leading-6 text-gray-900">
@@ -817,7 +853,229 @@ const handleCopyAddressChange=()=>{
                       </div>
                   </div>
                 
+                  <div className="sm:col-span-4">
+              <label htmlFor="period" className="block text-sm font-medium leading-6 text-gray-900">
+               Period at current Residence
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
+                    type="number"
+                    name="period"
+                    id="period"
+                    autoComplete="period"
+                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="in years"
+                    required
+                  />
+                </div>
+              </div>
 
+              
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="selectcard" className="block text-sm font-medium leading-6 text-gray-900">
+                Your Residence is
+              </label>
+              <div className="mt-2">
+               
+                    <select
+                    id="selectcard"
+                    name="selectcard"
+                    autoComplete="selectcard"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                    >
+                     {addressdetails.map((type)=>(
+                    <option>
+                      {type.residence}
+                    
+                    </option>
+                    ))}
+                    
+                    </select>
+                
+               
+              </div>
+            </div>
+
+            <div className="sm:col-span-4">
+                    <h2 className="text-base font-semibold py-3 leading-7 text-gray-900">COMPANY DETAILS</h2>
+                    <label htmlFor="companyName" className="block text-sm font-medium leading-6 text-gray-900">
+                       Company Name
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      
+                        <input
+                          type="text"
+                          name="companyName"
+                          id="companyName"
+                          autoComplete="companyName"
+                          className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Company Name"
+                          required
+                        />
+                      </div>
+                    </div>
+                      <label htmlFor="companyaddress" className="block text-sm font-medium leading-6 text-gray-900">
+                      Company Address
+                      </label>
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="flat"
+                            id="flat"
+                            autoComplete="flat"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="flat / door no. & house name"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="street"
+                            id="street"
+                            autoComplete="street"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Street"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="city"
+                            id="city"
+                            autoComplete="city"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="City"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="state"
+                            id="state"
+                            autoComplete="state"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="State"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="landMark"
+                            id="landMark"
+                            autoComplete="landMark"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="LandMark"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="number"
+                            name="pincode"
+                            id="pincode"
+                            autoComplete="pincode"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Pincode"
+                            required
+                          />
+                        </div>
+                      </div>
+              </div>
+            
+            <div className="sm:col-span-4">
+              <label htmlFor="designation" className="block text-sm font-medium leading-6 text-gray-900">
+                Designation
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
+                    type="text"
+                    name="designation"
+                    id="designation"
+                    autoComplete="designation"
+                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Designation"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="sm:col-span-4">
+              <label htmlFor="telNo" className="block text-sm font-medium leading-6 text-gray-900">
+                Tel.No
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
+                    type="text"
+                    name="telNo"
+                    id="telNo"
+                    autoComplete="telNo"
+                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Tel.no"
+                    
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="sm:col-span-4">
+              <label htmlFor="officeEmail" className="block text-sm font-medium leading-6 text-gray-900">
+                Office E-mail ID
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
+                    type="email"
+                    name="officeEmail"
+                    id="officeEmail"
+                    autoComplete="officeEmail"
+                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Office E-mail ID"
+                    
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            
+            
             <div className="col-span-full">
               <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
                 About

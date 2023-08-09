@@ -4,10 +4,10 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import FormData from './FormData'
 
 const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
+    { name: 'HDFC', href: '#', current: true },
+    { name: 'IDFC', href: '#', current: false },
+    { name: 'Indusand', href: '#', current: false },
+
 ]
 
 
