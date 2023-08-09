@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css';
 
 const selectcard=[
   {
@@ -67,6 +69,12 @@ const surrogate=[
   },
 ]
 const FormData = () => {
+  const [dob, setDob] = useState(null);
+
+  const handleDateChange = (date) => {
+    setDob(date);
+  };
+
   return (
 
       <form>
@@ -183,27 +191,40 @@ const FormData = () => {
                     id="customerName"
                     autoComplete="customerName"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="MIRSHAD ALI"
+                    placeholder="First Name"
                     required
                   />
-                    <input
+        
+                </div>
+              </div>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
                     type="text"
                     name="customerName"
                     id="customerName"
                     autoComplete="customerName"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="MIRSHAD ALI"
-                    required
-                  />
-                    <input
-                    type="text"
-                    name="customerName"
-                    id="customerName"
-                    autoComplete="customerName"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="MIRSHAD ALI"
+                    placeholder="Middle Name"
                     
                   />
+        
+                </div>
+              </div>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
+                    type="text"
+                    name="customerName"
+                    id="customerName"
+                    autoComplete="customerName"
+                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Last Name"
+                    required
+                  />
+        
                 </div>
               </div>
             </div>
@@ -212,44 +233,26 @@ const FormData = () => {
                Date of Birth
               </label>
               <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                 
-                  <input
-                    type="number"
-                    name="dateofbirth"
-                    id="dateofbirth"
-                    autoComplete="dateofbirth"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase   pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
-                    required
+               
+                  <DatePicker
+                    id="dob"
+                    selected={dob}
+                    onChange={handleDateChange}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 border rounded-md w-full"
                   />
-                  <p>/</p>
-                   <input
-                    type="number"
-                    name="dateofbirth"
-                    id="dateofbirth"
-                    autoComplete="dateofbirth"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase  pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
-                    required
-                  />
-                  <p>/</p>
-                   <input
-                    type="number"
-                    name="dateofbirth"
-                    id="dateofbirth"
-                    autoComplete="dateofbirth"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase  pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
-                    required
-                  />
-                </div>
+                
               </div> 
             </div>
-            <fieldset>
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <legend className="text-sm font-semibold leading-6 text-gray-900">Gender</legend>          
-              <div className="mt-6 space-y-6">
+            
+            <div className="sm:col-span-4">
+            <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
+               Gender
+              </label>
                 <div className="flex items-center gap-x-3">
                   <input
                     id="push-everything"
@@ -258,7 +261,7 @@ const FormData = () => {
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
-                    Male
+                    male
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
@@ -269,7 +272,7 @@ const FormData = () => {
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
-                    Female
+                    Same as email
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
@@ -280,30 +283,10 @@ const FormData = () => {
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
-                    Others
+                    No push notifications
                   </label>
                 </div>
-              </div>
-              </div>
-            </fieldset>
-            <div className="sm:col-span-4">
-              <label htmlFor="fathername" className="block text-sm font-medium leading-6 text-gray-900">
-               Father Name
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                 
-                  <input
-                    type="text"
-                    name="fathername"
-                    id="fathername"
-                    autoComplete="fathername"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
-                    required
-                  />
-                </div>
-              </div> 
+              
             </div>
 
             <div className="sm:col-span-4">
@@ -474,7 +457,7 @@ const FormData = () => {
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
+                  type="radio"
                   name="street-address"
                   id="street-address"
                   autoComplete="street-address"
@@ -596,30 +579,30 @@ const FormData = () => {
               <div className="mt-6 space-y-6">
                 <div className="flex items-center gap-x-3">
                   <input
-                    id="push-everything"
-                    name="push-notifications"
+                    id="male"
+                    name="gender"
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
-                  <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
-                    Everything
+                  <label htmlFor="male" className="block text-sm font-medium leading-6 text-gray-900">
+                    male
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
                   <input
-                    id="push-email"
-                    name="push-notifications"
+                    id="female"
+                    name="gender"
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
-                  <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
-                    Same as email
+                  <label htmlFor="female" className="block text-sm font-medium leading-6 text-gray-900">
+                    female
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
                   <input
-                    id="push-nothing"
-                    name="push-notifications"
+                    id="others"
+                    name="gender"
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
