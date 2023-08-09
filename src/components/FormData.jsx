@@ -85,6 +85,59 @@ const FormData = () => {
   const[initialStatus,setInitialStatus]=useState('');
   const [spouseName,setSpouseName]=useState('');
 
+  const[qualificationStatus,setQualificationStatus]=useState('');
+  const [others,setOthers]=useState('');
+
+  const[residentialAddress,setResidentialAddress]=useState({
+    flat:'',
+    street:'',
+    city:'',
+    state:'',
+    landMark:'',
+    pincode:''
+  });
+
+  const [permanentAddress,setPermanentAddress]=useState({
+    flat:'',
+    street:'',
+    city:'',
+    state:'',
+    landMark:'',
+    pincode:''
+  })
+
+  const [copyAddress,setCopyAddress]=useState(false);
+
+const handleResidentialAddressChange=(field,value)=>{
+  setResidentialAddress((prevAddress)=>({
+    ...prevAddress,
+    [field]:value,
+  }));
+  if(copyAddress){
+    setPermanentAddress((prevAddress)=>({
+      ...prevAddress,
+      [field]:value,
+    }))
+  }
+}
+
+const handleCopyAddressChange=()=>{
+  setCopyAddress(!copyAddress);
+  if(!copyAddress){
+    setPermanentAddress(residentialAddress);
+  }else{
+    setPermanentAddress({
+    flat:'',
+    street:'',
+    city:'',
+    state:'',
+    landMark:'',
+    pincode:''
+    })
+  }
+}
+
+
   const handleDateChange = (date) => {
     setDob(date);
   };
@@ -94,6 +147,10 @@ const FormData = () => {
     setSpouseName('');
   };
 
+  const handleQualificationStatusChange=(event)=>{
+    setQualificationStatus(event.target.value);
+    setOthers('')
+  };
   return (
 
       <form>
@@ -324,7 +381,7 @@ const FormData = () => {
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     required
                     >
-                    
+                    <option>Select</option>
                     <option>Single</option>
                     <option>Married</option>
                     <option>Others</option>
@@ -355,27 +412,52 @@ const FormData = () => {
               )}
             </div>
 
-
-            <div className="sm:col-span-4">
-              <label htmlFor="mothername" className="block text-sm font-medium leading-6 text-gray-900">
-               Mother Name
+            <div className="sm:col-span-3">
+              <label htmlFor="qualification" className="block text-sm font-medium leading-6 text-gray-900">
+               Qualification
               </label>
               <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                 
-                  <input
-                    type="text"
-                    name="mothername"
-                    id="mothername"
-                    autoComplete="mothername"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
+              
+                    <select
+                    id="qualification"
+                    value={qualificationStatus}
+                    onChange={handleQualificationStatusChange}
+                    name="qualification"
+                    autoComplete="qualification"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     required
-                  />
-                </div>
-              </div> 
+                    >
+                    <option>Select</option>
+                    <option>10th / 12th</option>
+                    <option>Graduate</option>
+                    <option>Professional</option>
+                    <option>Others</option>
+                    </select>
+              </div>
+              
+              {qualificationStatus==='Others'&&(
+                 <div className="sm:col-span-4">
+                 <label htmlFor="others" className="block text-sm font-medium leading-6 text-gray-900">
+                  Please Specify
+                 </label>
+                 <div className="mt-2">
+                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                     <input
+                       type="text"
+                       name="others"
+                       value={others}
+                       onChange={(e)=>setOthers(e.target.value)}
+                       id="others"
+                       autoComplete="others"
+                       className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                       placeholder="Please Specify"
+                       required
+                     />
+                   </div>
+                   </div>
+                 </div>
+              )}
             </div>
-
             <div className="sm:col-span-4">
               <label htmlFor="pannumber" className="block text-sm font-medium leading-6 text-gray-900">
               Pan Number
@@ -394,6 +476,347 @@ const FormData = () => {
                 </div>
               </div> 
             </div>
+
+            <div className="sm:col-span-4">
+                      <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                      Mobile Number
+                      </label>
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="phone"
+                            id="phone"
+                            autoComplete="phone"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Customer mobile number"
+                            required
+                          />
+                        </div>
+                      </div>
+                  </div>
+
+                  <div className="sm:col-span-4">
+                      <label htmlFor="altPhone" className="block text-sm font-medium leading-6 text-gray-900">
+                      Alt.Mobile Number
+                      </label>
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="altPhone"
+                            id="altPhone"
+                            autoComplete="altPhone"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="alternative number"
+                           
+                          />
+                        </div>
+                      </div>
+                  </div>
+
+                  <div className="sm:col-span-4"> 
+                      <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                      Email ID
+                      </label>
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            autoComplete="email"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="email"
+                            required
+                          />
+                        </div>
+                      </div>
+                  </div>
+            
+            
+                  <div className="sm:col-span-4">
+                    <h2 className="text-base font-semibold py-3 leading-7 text-gray-900">RESIDENCE ADDRESS</h2>
+                      <label htmlFor="residenceAddress" className="block text-sm font-medium leading-6 text-gray-900">
+                      Residential Address
+                      </label>
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="flat"
+                            id="flat"
+                            value={residentialAddress.flat}
+                            onChange={(e)=>
+                            handleResidentialAddressChange('flat',e.target.value)
+                            }
+                            autoComplete="flat"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="flat / door no. & house name"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="street"
+                            id="street"
+                            value={residentialAddress.street}
+                            onChange={(e)=>
+                              handleResidentialAddressChange('street',e.target.value)
+                              }
+                            autoComplete="street"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Street"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="city"
+                            id="city"
+                            value={residentialAddress.city}
+                            onChange={(e)=>
+                              handleResidentialAddressChange('city',e.target.value)
+                              }
+                            autoComplete="city"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="City"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="state"
+                            id="state"
+                            value={residentialAddress.state}
+                            onChange={(e)=>
+                              handleResidentialAddressChange('state',e.target.value)
+                              }
+                            autoComplete="state"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="State"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="landMark"
+                            id="landMark"
+                            value={residentialAddress.landMark}
+                            onChange={(e)=>
+                              handleResidentialAddressChange('landMark',e.target.value)
+                              }
+                            autoComplete="landMark"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="LandMark"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="number"
+                            name="pincode"
+                            id="pincode"
+                            value={residentialAddress.pincode}
+                            onChange={(e)=>
+                              handleResidentialAddressChange('pincode',e.target.value)
+                              }
+                            autoComplete="pincode"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Pincode"
+                            required
+                          />
+                        </div>
+                      </div>
+                  </div>
+
+              <div className="sm:col-span-4">
+              <label htmlFor="sameadd" className="block text-sm font-medium leading-6 text-gray-900">
+              Same as above (Copy Residential Address to Permanent Address)
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                 
+                  <input
+                    type="checkbox"
+                    name="sameadd"
+                    checked={copyAddress}
+                    onChange={handleCopyAddressChange}
+                    id="sameadd"
+                    autoComplete="sameadd"
+                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="mIRSHAD ALI"
+                    
+                  />
+                </div>
+              </div> 
+            </div>
+                  <div className="sm:col-span-4">
+                    
+                      <label htmlFor="residenceAddress" className="block text-sm font-medium leading-6 text-gray-900">
+                      Permanent Address
+                      </label>
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="flat"
+                            id="flat"
+                            value={permanentAddress.flat}
+                            onChange={(e)=>
+                              setPermanentAddress({
+                                ...permanentAddress,
+                                flat:e.target.value,
+                              })
+                            }
+                            autoComplete="flat"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="flat / door no. & house name"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="street"
+                            id="street"
+                            value={permanentAddress.street}
+                            onChange={(e) =>
+                              setPermanentAddress({
+                                  ...permanentAddress,
+                                  street: e.target.value,
+                              })
+                          }
+                            autoComplete="street"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Street"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="city"
+                            id="city"
+                            value={permanentAddress.city}
+                            onChange={(e) =>
+                              setPermanentAddress({
+                                  ...permanentAddress,
+                                  city: e.target.value,
+                              })
+                          }
+                            autoComplete="city"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="City"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="state"
+                            id="state"
+                            value={permanentAddress.state}
+                            onChange={(e) =>
+                              setPermanentAddress({
+                                  ...permanentAddress,
+                                  state: e.target.value,
+                              })
+                          }
+                            autoComplete="state"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="State"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="text"
+                            name="landMark"
+                            id="landMark"
+                            value={permanentAddress.landMark}
+                            onChange={(e) =>
+                              setPermanentAddress({
+                                  ...permanentAddress,
+                                  landMark: e.target.value,
+                              })
+                          }
+                            autoComplete="landMark"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="LandMark"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        
+                          <input
+                            type="number"
+                            name="pincode"
+                            id="pincode"
+                            value={permanentAddress.pincode}
+                            onChange={(e) =>
+                              setPermanentAddress({
+                                  ...permanentAddress,
+                                  pincode: e.target.value,
+                              })
+                          }
+                            autoComplete="pincode"
+                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                            placeholder="Pincode"
+                            required
+                          />
+                        </div>
+                      </div>
+                  </div>
+                
 
             <div className="col-span-full">
               <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
@@ -694,6 +1117,7 @@ const FormData = () => {
           Save
         </button>
       </div>
+     
     </form>
     
   )
