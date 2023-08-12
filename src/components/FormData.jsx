@@ -1254,7 +1254,7 @@ const handleCopyAddressChange=()=>{
               <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
             </div>
 
-            <div className="col-span-full">
+            {/* <div className="col-span-full">
               <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
                 Photo
               </label>
@@ -1267,9 +1267,9 @@ const handleCopyAddressChange=()=>{
                   Change
                 </button>
               </div>
-            </div>
+            </div> */}
 
-            <div className="col-span-full">
+            {/* <div className="col-span-full">
               <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
                 Cover photo
               </label>
@@ -1289,15 +1289,15 @@ const handleCopyAddressChange=()=>{
                   <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
+        {/* <div className="border-b border-gray-900/10 pb-12"> */}
+          {/* <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
+          <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p> */}
 
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          {/* <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
               <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
                 First name
@@ -1419,17 +1419,17 @@ const handleCopyAddressChange=()=>{
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
-            </div>
-          </div>
-        </div>
+            </div> */}
+          {/* </div> */}
+        {/* </div> */}
 
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
+        {/* <div className="border-b border-gray-900/10 pb-12"> */}
+          {/* <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
             We'll always let you know about important changes, but you pick what else you want to hear about.
-          </p>
+          </p> */}
 
-          <div className="mt-10 space-y-10">
+          {/* <div className="mt-10 space-y-10">
             <fieldset>
               <legend className="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
               <div className="mt-6 space-y-6">
@@ -1522,8 +1522,8 @@ const handleCopyAddressChange=()=>{
                 </div>
               </div>
             </fieldset>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
