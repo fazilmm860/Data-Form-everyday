@@ -112,6 +112,57 @@ const addressdetails=[
     residence:"Resi Cum Office"
   },
 ]
+const salary=[
+  {
+    type:'Select'
+  },
+  {
+    type:'Private Ltd'
+  },
+  {
+    type:'Partnership'
+  },
+  {
+    type:'Proprietorship'
+  },
+  {
+    type:'Public Ltd'
+  },
+  {
+    type:'Public Sector'
+  },
+  {
+    type:'Government'
+  },
+  {
+    type:'Multinational'
+  },
+  {
+    type:'Others'
+  },
+]
+const self=[
+  {
+    type:'Select'
+  },
+  {
+    type:'Sole Proprietorship'
+  },
+  {
+    type:'Partnership'
+  },
+  {
+    type:'Public Ltd'
+  },
+  {
+    type:'Private Ltd'
+  },
+  {
+    type:'Others'
+  },
+]
+
+
 const FormData = () => {
   const [dob, setDob] = useState(null);
   const[initialStatus,setInitialStatus]=useState('');
@@ -189,17 +240,31 @@ const handleCopyAddressChange=()=>{
     setQualificationStatus(event.target.value);
     setOthers('')
   };
+
+  const handleSalaryChange=()=>{
+    setIsSalary(!isSalary);
+    setIsSelfEmployed(false);
+    setEmplomentType('')
+  }
+
+  const handleSelfEmployedChange=()=>{
+    setIsSelfEmployed(!isSelfEmployed);
+    setIsSalary(false)
+    setEmplomentType('')
+  }
+  
+
   return (
 
-      <form>
-      <div className="space-y-12">
+      <form className='flex flex-col justify-center items-center'>
+      <div className="space-y-12 ">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Credit Card Application Form</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Fill this from properly
           </p>
             <DatePicker className="mt-4" selected={startDate} onChange={(date) => setStartDate(date)}/>
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                 Executive Name
@@ -1073,12 +1138,71 @@ const handleCopyAddressChange=()=>{
               </div>
             </div>
 
+            <div className="sm:col-span-4">
+              <h2 className="text-2xl font-semibold mb-4">Occupation Type</h2>
+              <div className="mb-4">
+                <label htmlFor="occupation" className='flex items-center mb-2'>
+                  <input
+                  type='checkbox'
+                  name="occupation"
+                  id="occupation"
+                  checked={isSalary}
+                  onChange={handleSalaryChange}
+                  autoComplete='occupation'
+                  className="mr-2"
+                  required
+                  />
+                  Salaried
+                </label>
+                {isSalary &&(
+                  <select
+                  value={employmentType}
+                  onChange={(e)=>setEmplomentType(e.target.value)}
+                  className="w-full px-2 py-1 border rounded"
+                  >
+                    {salary.map((sel)=>(
+                      <option >{sel.type}</option>
+                    ))}
+                  </select>
+                )}
+
+              </div>
+              <div className="mb-4">
+                <label htmlFor="occupation" className='flex items-center mb-2'>
+                  <input
+                  type='checkbox'
+                  name="occupation"
+                  id="occupation"
+                  checked={isSelfEmployed}
+                  onChange={handleSelfEmployedChange}
+                  autoComplete='occupation'
+                  className="mr-2"
+                  />
+                 Self-Employed
+                </label>
+                {isSelfEmployed &&(
+                  <select
+                  value={employmentType}
+                  onChange={(e)=>setEmplomentType(e.target.value)}
+                  className="w-full px-2 py-1 border rounded"
+                  required
+                  >
+                    {self.map((sel)=>(
+                      <option >{sel.type}</option>
+                    ))}
+                  </select>
+                )}
+
+              </div>
+            </div>
+
+
 
             
             
             <div className="col-span-full">
               <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                About
+                Remark
               </label>
               <div className="mt-2">
                 <textarea

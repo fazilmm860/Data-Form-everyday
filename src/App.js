@@ -6,9 +6,9 @@ import Dummy from './components/Dummy';
 function App() {
   return (
     <div>
-      {/* < Navbar />
-      <FormData /> */}
-      <Dummy />
+      < Navbar />
+      <FormData />
+      {/* <Dummy /> */}
 
     </div>
 
