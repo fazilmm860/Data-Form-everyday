@@ -1,91 +1,162 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Form = () => {
-    const [formData, setFormData] = useState({
-        residenceAddress: '',
-        permanentAddress: '',
-        sameAsAbove: false,
-    });
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        const newValue = type === 'checkbox' ? checked : value;
-
-        if (name === 'sameAsAbove') {
-            setFormData({
-                ...formData,
-                sameAsAbove: newValue,
-                permanentAddress: newValue ? formData.residenceAddress : formData.permanentAddress,
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: newValue,
-            });
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            await axios.post('/api/addData', formData);
-            console.log('Data added successfully');
-        } catch (error) {
-            console.error('Error adding data:', error);
-        }
+const ResidenceAddressForm = ({ formData, setFormData }) => {
+    const handleResidenceChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            residenceAddress: {
+                ...prevData.residenceAddress,
+                [name]: value,
+            },
+        }));
     };
 
     return (
-        <div className="container mx-auto mt-8">
-            <form className="w-1/2 mx-auto" onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2" htmlFor="residenceAddress">
-                        Residence Address
-                    </label>
-                    <input
-                        type="text"
-                        name="residenceAddress"
-                        value={formData.residenceAddress}
-                        onChange={handleChange}
-                        className="border rounded w-full py-2 px-3"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2" htmlFor="permanentAddress">
-                        Permanent Address
-                    </label>
-                    <input
-                        type="text"
-                        name="permanentAddress"
-                        value={formData.permanentAddress}
-                        onChange={handleChange}
-                        className="border rounded w-full py-2 px-3"
-                        disabled={formData.sameAsAbove}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 font-bold">
-                        <input
-                            type="checkbox"
-                            name="sameAsAbove"
-                            checked={formData.sameAsAbove}
-                            onChange={handleChange}
-                            className="mr-2 leading-tight"
-                        />
-                        <span className="text-sm">Same as above</span>
-                    </label>
-                </div>
-                <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                    Submit
-                </button>
-            </form>
+        <div>
+            <h2 className="text-lg font-semibold mb-4">Residence Address</h2>
+            <input
+                type="text"
+                name="flat"
+                value={formData.residenceAddress.flat}
+                onChange={handleResidenceChange}
+                placeholder="Flat"
+                className="mb-2 p-2 border rounded w-full"
+            />
+            {/* Add other input fields for residence address */}
         </div>
     );
 };
 
-export default Form;
+const PermanentAddressForm = ({ formData, setFormData, sameAsAbove }) => {
+    const handlePermanentChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            permanentAddress: {
+                ...prevData.permanentAddress,
+                [name]: value,
+            },
+        }));
+    };
+
+    return (
+        <div>
+            <h2 className="text-lg font-semibold mb-4">Permanent Address</h2>
+            <input
+                type="text"
+                name="flat"
+                value={formData.permanentAddress.flat}
+                onChange={handlePermanentChange}
+                placeholder="Flat"
+                className="mb-2 p-2 border rounded w-full"
+                disabled={sameAsAbove}
+            />
+            {/* Add other input fields for permanent address */}
+        </div>
+    );
+};
+
+const AddressForm = () => {
+    const [formData, setFormData] = useState({
+        date: '',
+        exeName: '',
+        dseCode: '',
+        cardSelect: '',
+        surrogate: '',
+        custName: {
+            firstName: '',
+            middleName: '',
+            lastName: ''
+        },
+        dateOfBirth: '',
+        gender: '',
+        maritalStatus: '',
+        spouseName: '',
+        qualification: '',
+        other: '',
+        panNumber: '',
+        mobileNumber: '',
+        altMobileNumber: '',
+        email: '',
+        residenceAddress: {
+            flat: '',
+            street: '',
+            city: '',
+            state: '',
+            landMark: '',
+            pincode: ''
+        },
+        sameAsAbove: false,
+        permanentAddress: {
+            flat: '',
+            street: '',
+            city: '',
+            state: '',
+            landMark: '',
+            pincode: ''
+        },
+        periodResidence: '',
+        residenceIs: '',
+        companyName: '',
+        companyAddress: {
+            flat: '',
+            street: '',
+            city: '',
+            state: '',
+            landMark: '',
+            pincode: ''
+        },
+        designation: '',
+        telNo: '',
+        officeEmail: '',
+        employmentType: '',
+        employmentDetails: '',
+        hdfcAcc: '',
+        otherAcc: '',
+        remark: ''
+    })
+    const [sameAsAbove, setSameAsAbove] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/api/saveFormData', formData);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="p-4">
+            {/* Other form fields */}
+            <ResidenceAddressForm formData={formData} setFormData={setFormData} />
+
+            <div className="mt-4">
+                <label className="flex items-center">
+                    <input
+                        type="checkbox"
+                        checked={sameAsAbove}
+                        onChange={() => setSameAsAbove(!sameAsAbove)}
+                        className="mr-2"
+                    />
+                    Same as above
+                </label>
+            </div>
+
+            <PermanentAddressForm formData={formData} setFormData={setFormData} sameAsAbove={sameAsAbove} />
+
+            <button
+                type="submit"
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+                Submit
+            </button>
+        </form>
+    );
+};
+
+export default AddressForm;

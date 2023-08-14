@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
+import ResidenceAddressForm from './ResidenceAddressForm';
+import PermanentAddressForm from './PermanentAddressForm';
 
 const selectcard=[
   {
@@ -173,59 +176,72 @@ const FormData = () => {
 
   const [startDate, setStartDate] = useState(new Date());
 
-  const[residentialAddress,setResidentialAddress]=useState({
-    flat:'',
-    street:'',
-    city:'',
-    state:'',
-    landMark:'',
-    pincode:''
-  });
 
-  const [permanentAddress,setPermanentAddress]=useState({
-    flat:'',
-    street:'',
-    city:'',
-    state:'',
-    landMark:'',
-    pincode:''
-  })
 
-  const [copyAddress,setCopyAddress]=useState(false);
+
 
   const[isSelfEmployed,setIsSelfEmployed]=useState(false);
   const[isSalary,setIsSalary]=useState(false);
   const[employmentType,setEmplomentType]=useState('');
 
-const handleResidentialAddressChange=(field,value)=>{
-  setResidentialAddress((prevAddress)=>({
-    ...prevAddress,
-    [field]:value,
-  }));
-  if(copyAddress){
-    setPermanentAddress((prevAddress)=>({
-      ...prevAddress,
-      [field]:value,
-    }))
-  }
-}
-
-const handleCopyAddressChange=()=>{
-  setCopyAddress(!copyAddress);
-  if(!copyAddress){
-    setPermanentAddress(residentialAddress);
-  }else{
-    setPermanentAddress({
-    flat:'',
-    street:'',
-    city:'',
-    state:'',
-    landMark:'',
-    pincode:''
-    })
-  }
-}
-
+  const [formData,setFormData]=useState({
+    date: '',
+    exeName: '',
+    dseCode: '',
+    cardSelect: '',
+    surrogate: '',
+    custName: {
+        firstName: '',
+        middleName: '',
+        lastName: ''
+    },
+    dateOfBirth: '',
+    gender: '',
+    maritalStatus: '',
+    spouseName:'',
+    qualification: '',
+    other: '',
+    panNumber: '',
+    mobileNumber:'',
+    altMobileNumber: '',
+    email:'',
+    residenceAddress: {
+        flat:'',
+        street:'',
+        city:'',
+        state:'',
+        landMark:'',
+        pincode:''
+    },
+     sameAsAbove:false,
+    permanentAddress: {
+        flat: '',
+        street: '',
+        city: '',
+        state: '',
+        landMark: '',
+        pincode: ''
+    },
+    periodResidence: '',
+    residenceIs: '',
+    companyName: '',
+    companyAddress: {
+        flat: '',
+        street: '',
+        city: '',
+        state: '',
+        landMark: '',
+        pincode: ''
+    },
+    designation: '',
+    telNo: '',
+    officeEmail: '',
+    employmentType: '',
+    employmentDetails: '',
+    hdfcAcc: '',
+    otherAcc: '',
+    remark: ''
+  })
 
   const handleDateChange = (date) => {
     setDob(date);
@@ -234,11 +250,24 @@ const handleCopyAddressChange=()=>{
   const handleMaritalStatusChange=(event)=>{
    setInitialStatus(event.target.value);
     setSpouseName('');
+    const isMarried = event.target.value === 'married';
+    setFormData({
+      ...formData,
+      maritalStatus: event.target.value,
+      spouseName: isMarried ? '' : formData.spouseName,
+    });
   };
 
   const handleQualificationStatusChange=(event)=>{
     setQualificationStatus(event.target.value);
     setOthers('')
+    const isOther=event.target.value==='other';
+    setFormData({
+      ...formData,
+      qualification:event.target.value,
+      other:isOther ? '':formData.other
+    })
+    
   };
 
   const handleSalaryChange=()=>{
@@ -247,16 +276,100 @@ const handleCopyAddressChange=()=>{
     setEmplomentType('')
   }
 
+  
   const handleSelfEmployedChange=()=>{
     setIsSelfEmployed(!isSelfEmployed);
     setIsSalary(false)
     setEmplomentType('')
   }
 
+ 
+  
+ 
 
+const handleSubmit=async (event)=>{
+  event.preventdefault();
+  try{
+    let formDataToSend = formData;
+
+    if (formData.sameAsAbove) {
+      formDataToSend = {
+        ...formDataToSend,
+        permanentAddress: formData.residenceAddress,
+      };
+    }
+        const url=`http://localhost:5000/api`
+        const response=await axios.post(`${url}/sendData`,formDataToSend)
+
+        if(response.status===201){
+          console.log(`Data submitted succesfully `);
+          setFormData({
+            date: '',
+            exeName: '',
+            dseCode: '',
+            cardSelect: '',
+            surrogate: '',
+            custName: {
+                firstName: '',
+                middleName: '',
+                lastName: ''
+            },
+            dateOfBirth: '',
+            gender: '',
+            maritalStatus: '',
+            spouseName:'',
+            qualification: '',
+            other: '',
+            panNumber: '',
+            mobileNumber:'',
+            altMobileNumber: '',
+            email:'',
+            residenceAddress: {
+                flat:'',
+                street:'',
+                city:'',
+                state:'',
+                landMark:'',
+                pincode:''
+            },
+            sameAsAbove: false,
+            permanentAddress: {
+                flat: '',
+                street: '',
+                city: '',
+                state: '',
+                landMark: '',
+                pincode: ''
+            },
+            periodResidence: '',
+            residenceIs: '',
+            companyName: '',
+            companyAddress: {
+                flat: '',
+                street: '',
+                city: '',
+                state: '',
+                landMark: '',
+                pincode: ''
+            },
+            designation: '',
+            telNo: '',
+            officeEmail: '',
+            employmentType: '',
+            employmentDetails: '',
+            hdfcAcc: '',
+            otherAcc: '',
+            remark: ''
+          })
+        }
+  }catch(error){
+    console.log(error);
+  }
+
+}
   return (
 
-      <form className='flex flex-col justify-center items-center'>
+      <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center'>
       <div className="space-y-12 ">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Credit Card Application Form</h2>
@@ -498,8 +611,8 @@ const handleCopyAddressChange=()=>{
                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                      <input
                        type="text"
-                       name="spousename"
-                       value={spouseName}
+                       name="spouseName"
+                       value={formData.spouseName}
                        onChange={(e)=>setSpouseName(e.target.value)}
                        id="spousename"
                        autoComplete="spousename"
@@ -638,126 +751,8 @@ const handleCopyAddressChange=()=>{
                       </div>
                   </div>
             
-            
-                  <div className="sm:col-span-4">
-                    <h2 className="text-base font-semibold py-3 leading-7 text-gray-900">RESIDENCE ADDRESS</h2>
-                      <label htmlFor="residenceAddress" className="block text-sm font-medium leading-6 text-gray-900">
-                      Residential Address
-                      </label>
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="flat"
-                            id="flat"
-                            value={residentialAddress.flat}
-                            onChange={(e)=>
-                            handleResidentialAddressChange('flat',e.target.value)
-                            }
-                            autoComplete="flat"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="flat / door no. & house name"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="street"
-                            id="street"
-                            value={residentialAddress.street}
-                            onChange={(e)=>
-                              handleResidentialAddressChange('street',e.target.value)
-                              }
-                            autoComplete="street"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="Street"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="city"
-                            id="city"
-                            value={residentialAddress.city}
-                            onChange={(e)=>
-                              handleResidentialAddressChange('city',e.target.value)
-                              }
-                            autoComplete="city"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="City"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="state"
-                            id="state"
-                            value={residentialAddress.state}
-                            onChange={(e)=>
-                              handleResidentialAddressChange('state',e.target.value)
-                              }
-                            autoComplete="state"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="State"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="landMark"
-                            id="landMark"
-                            value={residentialAddress.landMark}
-                            onChange={(e)=>
-                              handleResidentialAddressChange('landMark',e.target.value)
-                              }
-                            autoComplete="landMark"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="LandMark"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="number"
-                            name="pincode"
-                            id="pincode"
-                            value={residentialAddress.pincode}
-                            onChange={(e)=>
-                              handleResidentialAddressChange('pincode',e.target.value)
-                              }
-                            autoComplete="pincode"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="Pincode"
-                            required
-                          />
-                        </div>
-                      </div>
-                  </div>
+                  <ResidenceAddressForm formData={formData} setFormData={setFormData} />
+                  
 
               <div className="sm:col-span-4">
               <label htmlFor="sameadd" className="block text-sm font-medium leading-6 text-gray-900">
@@ -765,14 +760,13 @@ const handleCopyAddressChange=()=>{
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                 
                   <input
                     type="checkbox"
-                    name="sameadd"
-                    checked={copyAddress}
-                    onChange={handleCopyAddressChange}
-                    id="sameadd"
-                    autoComplete="sameadd"
+                    name="sameAsAbove"
+                    checked={formData.sameAsAbove}
+                    onChange={e => setFormData(prevData => ({ ...prevData, sameAsAbove: e.target.checked }))}
+                    id="sameAsAbove"                   
+                    autoComplete="sameAsAbove"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="mIRSHAD ALI"
                     
@@ -780,144 +774,11 @@ const handleCopyAddressChange=()=>{
                 </div>
               </div> 
             </div>
-                  <div className="sm:col-span-4">
-                    
-                      <label htmlFor="residenceAddress" className="block text-sm font-medium leading-6 text-gray-900">
-                      Permanent Address
-                      </label>
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="flat"
-                            id="flat"
-                            value={permanentAddress.flat}
-                            onChange={(e)=>
-                              setPermanentAddress({
-                                ...permanentAddress,
-                                flat:e.target.value,
-                              })
-                            }
-                            autoComplete="flat"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="flat / door no. & house name"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="street"
-                            id="street"
-                            value={permanentAddress.street}
-                            onChange={(e) =>
-                              setPermanentAddress({
-                                  ...permanentAddress,
-                                  street: e.target.value,
-                              })
-                          }
-                            autoComplete="street"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="Street"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="city"
-                            id="city"
-                            value={permanentAddress.city}
-                            onChange={(e) =>
-                              setPermanentAddress({
-                                  ...permanentAddress,
-                                  city: e.target.value,
-                              })
-                          }
-                            autoComplete="city"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="City"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="state"
-                            id="state"
-                            value={permanentAddress.state}
-                            onChange={(e) =>
-                              setPermanentAddress({
-                                  ...permanentAddress,
-                                  state: e.target.value,
-                              })
-                          }
-                            autoComplete="state"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="State"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="landMark"
-                            id="landMark"
-                            value={permanentAddress.landMark}
-                            onChange={(e) =>
-                              setPermanentAddress({
-                                  ...permanentAddress,
-                                  landMark: e.target.value,
-                              })
-                          }
-                            autoComplete="landMark"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="LandMark"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="number"
-                            name="pincode"
-                            id="pincode"
-                            value={permanentAddress.pincode}
-                            onChange={(e) =>
-                              setPermanentAddress({
-                                  ...permanentAddress,
-                                  pincode: e.target.value,
-                              })
-                          }
-                            autoComplete="pincode"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="Pincode"
-                            required
-                          />
-                        </div>
-                      </div>
-                  </div>
-                
+                 {formData.sameAsAbove ? (
+                  <PermanentAddressForm formData={{ ...formData, permanentAddress: formData.residenceAddress }} setFormData={setFormData} />
+                ) : (
+                  <PermanentAddressForm formData={formData} setFormData={setFormData} />
+                )}
                   <div className="sm:col-span-4">
               <label htmlFor="period" className="block text-sm font-medium leading-6 text-gray-900">
                Period at current Residence
@@ -1007,11 +868,11 @@ const handleCopyAddressChange=()=>{
                         
                           <input
                             type="text"
-                            name="street"
-                            id="street"
+                            name="street1"
+                            id="street1"
                             autoComplete="street"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="Street"
+                            placeholder="Street1"
                             required
                           />
                         </div>
