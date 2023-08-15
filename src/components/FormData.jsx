@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import React, {  useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -77,21 +76,7 @@ const surrogate=[
     type:"RC Base"
   },
 ]
-const matirialStatus=[
-  {
-    status:"Select"
-  },
-  {
-    status:"Single"
-  },
-  {
-    status:"Married"
-  },
-  {
-    status:"Others"
-  },
 
-]
 const addressdetails=[
   {
     residence:"Select"
@@ -167,25 +152,10 @@ const self=[
 
 
 const FormData = () => {
-  const [dob, setDob] = useState(null);
-  const[initialStatus,setInitialStatus]=useState('');
-  const [spouseName,setSpouseName]=useState('');
-
-  const[qualificationStatus,setQualificationStatus]=useState('');
-  const [others,setOthers]=useState('');
-
-  const [startDate, setStartDate] = useState(new Date());
-
-
-
-
-
-  const[isSelfEmployed,setIsSelfEmployed]=useState(false);
-  const[isSalary,setIsSalary]=useState(false);
-  const[employmentType,setEmplomentType]=useState('');
+  
 
   const [formData,setFormData]=useState({
-    date: '',
+    date: new Date(),
     exeName: '',
     dseCode: '',
     cardSelect: '',
@@ -243,52 +213,70 @@ const FormData = () => {
     remark: ''
   })
 
-  const handleDateChange = (date) => {
-    setDob(date);
-  };
+ 
 
-  const handleMaritalStatusChange=(event)=>{
-   setInitialStatus(event.target.value);
-    setSpouseName('');
-    const isMarried = event.target.value === 'married';
+  const handleDateChanged=(dates)=>{
     setFormData({
       ...formData,
-      maritalStatus: event.target.value,
-      spouseName: isMarried ? '' : formData.spouseName,
+      date:dates
+      
+    })
+  }
+  const handleDateOfBirthChange=(dob)=>{
+    setFormData({
+      ...formData,
+      dateOfBirth:dob
+      
+    })
+  }
+ 
+ 
+  const handleEmploymentTypeChange = (event) => {
+    const newEmploymentType = event.target.value;
+    setFormData({
+      ...formData,
+      employmentType: newEmploymentType,
+      employmentDetails: '', // Reset details when employment type changes
+    });
+  };
+  const handleEmploymentDetailsChange = (event) => {
+    const newEmploymentDetails = event.target.value;
+    setFormData({
+      ...formData,
+      employmentDetails: newEmploymentDetails,
+    });
+  };
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
   };
 
-  const handleQualificationStatusChange=(event)=>{
-    setQualificationStatus(event.target.value);
-    setOthers('')
-    const isOther=event.target.value==='other';
-    setFormData({
-      ...formData,
-      qualification:event.target.value,
-      other:isOther ? '':formData.other
-    })
-    
-  };
-
-  const handleSalaryChange=()=>{
-    setIsSalary(!isSalary);
-    setIsSelfEmployed(false);
-    setEmplomentType('')
+const handleChange = (event) => {
+  const { name, value } = event.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    custName: {
+      ...prevData.custName,
+      [name]: value
+    }
+  }));
+};
+const handleCompanyAddChange=(event)=>{
+const {name,value}=event.target;
+setFormData((prevData)=>({
+  ...prevData,
+  companyAddress:{
+    ...prevData.companyAddress,
+    [name]:value
   }
-
-  
-  const handleSelfEmployedChange=()=>{
-    setIsSelfEmployed(!isSelfEmployed);
-    setIsSalary(false)
-    setEmplomentType('')
-  }
-
- 
-  
- 
+}))
+}
 
 const handleSubmit=async (event)=>{
-  event.preventdefault();
+  //  event.preventdefault();
   try{
     let formDataToSend = formData;
 
@@ -369,15 +357,15 @@ const handleSubmit=async (event)=>{
 }
   return (
 
-      <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center'>
+      <form className='flex flex-col justify-center items-center'>
       <div className="space-y-12 ">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Credit Card Application Form</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Fill this from properly
           </p>
-            <DatePicker className="mt-4" selected={startDate} onChange={(date) => setStartDate(date)}/>
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <DatePicker className="mt-4" selected={formData.date} onChange={handleDateChanged}/>
+            <div div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                 Executive Name
@@ -387,9 +375,11 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="text"
-                    name="username"
-                    id="username"
-                    autoComplete="username"
+                    name="exeName"
+                    id="exeName"
+                    value={formData.exeName}
+                    onChange={handleInputChange}
+                    autoComplete="exeName"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="mIRSHAD ALI"
                     required
@@ -406,9 +396,10 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="text"
-                    name="code"
-                    id="code"
-                    autoComplete="code"
+                    name="dseCode"
+                    id="dseCode"
+                    value={formData.dseCode}
+                    onChange={handleInputChange}
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="mIRSHAD ALI"
                     required
@@ -424,9 +415,11 @@ const handleSubmit=async (event)=>{
               <div className="mt-2">
                
                     <select
-                    id="selectcard"
-                    name="selectcard"
-                    autoComplete="selectcard"
+                    id="cardSelect"
+                    name="cardSelect"
+                    value={formData.cardSelect}
+                    onChange={handleInputChange}
+                    autoComplete="cardSelect"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
                      {selectcard.map((type)=>(
@@ -451,6 +444,8 @@ const handleSubmit=async (event)=>{
                     <select
                     id="surrogate"
                     name="surrogate"
+                    value={formData.surrogate}
+                    onChange={handleInputChange}
                     autoComplete="surrogate"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
@@ -469,7 +464,7 @@ const handleSubmit=async (event)=>{
 
             <div className="sm:col-span-4">
             <h2 className="text-base font-semibold leading-7 text-gray-900">APPLICANT DETAILS</h2>
-              <label htmlFor="customerName" className="block text-sm font-medium leading-6 text-gray-900">
+              <label  className="block text-sm font-medium leading-6 text-gray-900">
                 Customer Name(as per pan)
               </label>
               <div className="mt-2">
@@ -477,10 +472,13 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="text"
-                    name="customerName"
-                    id="customerName"
-                    autoComplete="customerName"
-                    className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    name="firstName"
+                    id="firstName"
+                    value={formData.custName.firstName}
+                    onChange={handleChange}
+                    autoComplete="firstName"
+                    style={{ textTransform: 'uppercase' }} 
+                    className="block flex-1 border-0 bg-transparent  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="First Name"
                     required
                   />
@@ -492,9 +490,11 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="text"
-                    name="customerName"
-                    id="customerName"
-                    autoComplete="customerName"
+                    name="middleName"
+                    id="middleName"
+                    value={formData.custName.middleName}
+                    onChange={handleChange}
+                    autoComplete="middleName"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Middle Name"
                     
@@ -507,9 +507,11 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="text"
-                    name="customerName"
-                    id="customerName"
-                    autoComplete="customerName"
+                    name="lastName"
+                    id="lastName"
+                    value={formData.custName.lastName}
+                    onChange={handleChange}
+                    autoComplete="lastName"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Last Name"
                     required
@@ -519,15 +521,16 @@ const handleSubmit=async (event)=>{
               </div>
             </div>
             <div className="sm:col-span-4">
-              <label htmlFor="dateofbirth" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="dateOfBirth" className="block text-sm font-medium leading-6 text-gray-900">
                Date of Birth
               </label>
               <div className="mt-2">
                
                   <DatePicker
-                    id="dob"
-                    selected={dob}
-                    onChange={handleDateChange}
+                    id="dateOfBirth"
+                    name='dateOfBirth'
+                    selected={formData.dateOfBirth}
+                    onChange={handleDateOfBirthChange}
                     peekNextMonth
                     showMonthDropdown
                     showYearDropdown
@@ -545,35 +548,44 @@ const handleSubmit=async (event)=>{
               </label>
                 <div className="flex items-center gap-x-3">
                   <input
-                    id="push-everything"
-                    name="push-notifications"
+                    id="gender"
+                    name="gender"
                     type="radio"
+                    value="male"
+                    checked={formData.gender ==='male'}
+                    onChange={handleInputChange}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
-                  <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
                     male
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
                   <input
-                    id="push-email"
-                    name="push-notifications"
+                    id="gender"
+                    name="gender"
                     type="radio"
+                    value="female"
+                    checked={formData.gender === 'female'}
+                    onChange={handleInputChange}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    required
+                    
                   />
-                  <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
                     female
                   </label>
                 </div>
                 <div className="flex items-center gap-x-3">
                   <input
-                    id="push-nothing"
-                    name="push-notifications"
+                    id="others"
+                    name="others"
                     type="radio"
+                    value="others"
+                    checked={formData.gender ==='others'}
+                    onChange={handleInputChange}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
-                  <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="others" className="block text-sm font-medium leading-6 text-gray-900">
                     others
                   </label>
                 </div>
@@ -581,19 +593,19 @@ const handleSubmit=async (event)=>{
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="surrogate" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="maritalStatus" className="block text-sm font-medium leading-6 text-gray-900">
                 Marital Status
               </label>
               <div className="mt-2">
               
                     <select
-                    id="materialStatus"
-                    value={initialStatus}
-                    onChange={handleMaritalStatusChange}
-                    name="materialStatus"
-                    autoComplete="materialStatus"
+                    id="maritalStatus"
+                    name="maritalStatus"
+                    value={formData.maritalStatus}
+                    onChange={handleInputChange}
+                    autoComplete="maritalStatus"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                    required
+                    
                     >
                     <option>Select</option>
                     <option>Single</option>
@@ -602,7 +614,7 @@ const handleSubmit=async (event)=>{
                     </select>
               </div>
               
-              {initialStatus==='Married'&&(
+              {formData.maritalStatus ==='Married'&&(
                  <div className="sm:col-span-4">
                  <label htmlFor="spousename" className="block text-sm font-medium leading-6 text-gray-900">
                    Spouse Name
@@ -613,7 +625,7 @@ const handleSubmit=async (event)=>{
                        type="text"
                        name="spouseName"
                        value={formData.spouseName}
-                       onChange={(e)=>setSpouseName(e.target.value)}
+                       onChange={handleInputChange}
                        id="spousename"
                        autoComplete="spousename"
                        className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
@@ -633,10 +645,10 @@ const handleSubmit=async (event)=>{
               <div className="mt-2">
               
                     <select
-                    id="qualification"
-                    value={qualificationStatus}
-                    onChange={handleQualificationStatusChange}
+                    id="qualification"                   
                     name="qualification"
+                    value={formData.qualification}
+                    onChange={handleInputChange}
                     autoComplete="qualification"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     required
@@ -649,7 +661,7 @@ const handleSubmit=async (event)=>{
                     </select>
               </div>
               
-              {qualificationStatus==='Others'&&(
+              {formData.qualification==='Others'&&(
                  <div className="sm:col-span-4">
                  <label htmlFor="others" className="block text-sm font-medium leading-6 text-gray-900">
                   Please Specify
@@ -658,11 +670,11 @@ const handleSubmit=async (event)=>{
                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                      <input
                        type="text"
-                       name="others"
-                       value={others}
-                       onChange={(e)=>setOthers(e.target.value)}
-                       id="others"
-                       autoComplete="others"
+                       name="other"
+                       value={formData.other}
+                       onChange={handleInputChange}
+                       id="other"
+                       autoComplete="other"
                        className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                        placeholder="Please Specify"
                        required
@@ -673,7 +685,7 @@ const handleSubmit=async (event)=>{
               )}
             </div>
             <div className="sm:col-span-4">
-              <label htmlFor="pannumber" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="panNumber" className="block text-sm font-medium leading-6 text-gray-900">
               Pan Number
               </label>
               <div className="mt-2">
@@ -681,9 +693,11 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="text"
-                    name="pannumber"
-                    id="pannumber"
-                    autoComplete="pannumber"
+                    name="panNumber"
+                    id="panNumber"
+                    value={formData.panNumber}
+                    onChange={handleInputChange}
+                    autoComplete="panNumber"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Etpk1043q"
                   />
@@ -692,7 +706,7 @@ const handleSubmit=async (event)=>{
             </div>
 
             <div className="sm:col-span-4">
-                      <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                      <label htmlFor="mobileNumber" className="block text-sm font-medium leading-6 text-gray-900">
                       Mobile Number
                       </label>
                       <div className="mt-2">
@@ -700,9 +714,11 @@ const handleSubmit=async (event)=>{
                         
                           <input
                             type="text"
-                            name="phone"
-                            id="phone"
-                            autoComplete="phone"
+                            name="mobileNumber"
+                            id="mobileNumber"
+                            value={formData.mobileNumber}
+                            onChange={handleInputChange}
+                            autoComplete="mobileNumber"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="Customer mobile number"
                             required
@@ -712,7 +728,7 @@ const handleSubmit=async (event)=>{
                   </div>
 
                   <div className="sm:col-span-4">
-                      <label htmlFor="altNum" className="block text-sm font-medium leading-6 text-gray-900">
+                      <label htmlFor="altMobileNumber" className="block text-sm font-medium leading-6 text-gray-900">
                       Alt.Mobile Number
                       </label>
                       <div className="mt-2">
@@ -720,9 +736,11 @@ const handleSubmit=async (event)=>{
                         
                           <input
                             type="text"
-                            name="altNum"
-                            id="altNum"
-                            autoComplete="altNum"
+                            name="altMobileNumber"
+                            id="altMobileNumber"
+                            value={formData.altMobileNumber}
+                            onChange={handleInputChange}
+                            autoComplete="altMobileNumber"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="alternative number"
                            
@@ -742,6 +760,8 @@ const handleSubmit=async (event)=>{
                             type="email"
                             name="email"
                             id="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
                             autoComplete="email"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="email"
@@ -780,7 +800,7 @@ const handleSubmit=async (event)=>{
                   <PermanentAddressForm formData={formData} setFormData={setFormData} />
                 )}
                   <div className="sm:col-span-4">
-              <label htmlFor="period" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="periodResidence" className="block text-sm font-medium leading-6 text-gray-900">
                Period at current Residence
               </label>
               <div className="mt-2">
@@ -788,9 +808,11 @@ const handleSubmit=async (event)=>{
                  
                   <input
                     type="number"
-                    name="period"
-                    id="period"
-                    autoComplete="period"
+                    name="periodResidence"
+                    id="periodResidence"
+                    value={formData.periodResidence}
+                    onChange={handleInputChange}
+                    autoComplete="periodResidence"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="in years"
                     required
@@ -802,15 +824,17 @@ const handleSubmit=async (event)=>{
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="selectcard" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="residenceIs" className="block text-sm font-medium leading-6 text-gray-900">
                 Your Residence is
               </label>
               <div className="mt-2">
                
                     <select
-                    id="selectcard"
-                    name="selectcard"
-                    autoComplete="selectcard"
+                    id="residenceIs"
+                    name="residenceIs"
+                    value={formData.residenceIs}
+                    onChange={handleInputChange}
+                    autoComplete="residenceIs"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
                      {addressdetails.map((type)=>(
@@ -838,6 +862,8 @@ const handleSubmit=async (event)=>{
                           type="text"
                           name="companyName"
                           id="companyName"
+                          value={formData.companyName}
+                          onChange={handleInputChange}
                           autoComplete="companyName"
                           className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                           placeholder="Company Name"
@@ -845,7 +871,7 @@ const handleSubmit=async (event)=>{
                         />
                       </div>
                     </div>
-                      <label htmlFor="companyaddress" className="block text-sm font-medium leading-6 text-gray-900">
+                      <label htmlFor="flat" className="block text-sm font-medium leading-6 text-gray-900">
                       Company Address
                       </label>
                       <div className="mt-2">
@@ -855,7 +881,9 @@ const handleSubmit=async (event)=>{
                             type="text"
                             name="flat"
                             id="flat"
-                            autoComplete="flat"
+                            value={formData.companyAddress.flat}
+                            onChange={handleCompanyAddChange}
+                            autoComplete="companyAddress.flat"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="flat / door no. & house name"
                             required
@@ -868,8 +896,10 @@ const handleSubmit=async (event)=>{
                         
                           <input
                             type="text"
-                            name="street1"
-                            id="street1"
+                            name="street"
+                            id="street"
+                            value={formData.companyAddress.street}
+                            onChange={handleCompanyAddChange}
                             autoComplete="street"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="Street1"
@@ -885,6 +915,8 @@ const handleSubmit=async (event)=>{
                             type="text"
                             name="city"
                             id="city"
+                            value={formData.companyAddress.city}
+                            onChange={handleCompanyAddChange}
                             autoComplete="city"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="City"
@@ -900,6 +932,8 @@ const handleSubmit=async (event)=>{
                             type="text"
                             name="state"
                             id="state"
+                            value={formData.companyAddress.state}
+                            onChange={handleCompanyAddChange}
                             autoComplete="state"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="State"
@@ -915,6 +949,8 @@ const handleSubmit=async (event)=>{
                             type="text"
                             name="landMark"
                             id="landMark"
+                            value={formData.companyAddress.landMark}
+                            onChange={handleCompanyAddChange}
                             autoComplete="landMark"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="LandMark"
@@ -930,6 +966,8 @@ const handleSubmit=async (event)=>{
                             type="number"
                             name="pincode"
                             id="pincode"
+                            value={formData.companyAddress.pincode}
+                            onChange={handleCompanyAddChange}
                             autoComplete="pincode"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="Pincode"
@@ -950,6 +988,8 @@ const handleSubmit=async (event)=>{
                     type="text"
                     name="designation"
                     id="designation"
+                    value={formData.designation}
+                    onChange={handleInputChange}
                     autoComplete="designation"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Designation"
@@ -967,9 +1007,11 @@ const handleSubmit=async (event)=>{
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                  
                   <input
-                    type="text"
+                    type="number"
                     name="telNo"
                     id="telNo"
+                    value={formData.telNo}
+                    onChange={handleInputChange}
                     autoComplete="telNo"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Tel.no"
@@ -990,6 +1032,8 @@ const handleSubmit=async (event)=>{
                     type="email"
                     name="officeEmail"
                     id="officeEmail"
+                    value={formData.officeEmail}
+                    onChange={handleInputChange}
                     autoComplete="officeEmail"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Office E-mail ID"
@@ -1002,93 +1046,99 @@ const handleSubmit=async (event)=>{
             <div className="sm:col-span-4">
               <h2 className="text-2xl font-semibold mb-4">Occupation Type</h2>
               <div className="mb-4">
-                <label htmlFor="occupation" className='flex items-center mb-2'>
+                <label htmlFor="Salaried" className='flex items-center mb-2'>
                   <input
-                  type='checkbox'
-                  name="occupation"
-                  id="occupation"
-                  checked={isSalary}
-                  onChange={handleSalaryChange}
-                  autoComplete='occupation'
+                  type='radio'
+                  name="Salaried"
+                  id="Salaried"
+                  value="Salaried"
+                  checked={formData.employmentType === 'Salaried'}
+                  onChange={handleEmploymentTypeChange}
+                  autoComplete='Salaried'
                   className="mr-2"
-                  required
+                 
                   />
                   Salaried
                 </label>
-                {isSalary &&(
-                  <select
-                  value={employmentType}
-                  onChange={(e)=>setEmplomentType(e.target.value)}
-                  className="w-full px-2 py-1 border rounded"
-                  >
-                    {salary.map((sel)=>(
-                      <option >{sel.type}</option>
-                    ))}
-                  </select>
-                )}
+               
 
               </div>
               <div className="mb-4">
-                <label htmlFor="occupation" className='flex items-center mb-2'>
+                <label htmlFor="Self-employment" className='flex items-center mb-2'>
                   <input
-                  type='checkbox'
-                  name="occupation"
-                  id="occupation"
-                  checked={isSelfEmployed}
-                  onChange={handleSelfEmployedChange}
-                  autoComplete='occupation'
+                  type='radio'
+                  name="Self-employment"
+                  id="Self-employment"
+                  value="Self-employment"
+                  checked={formData.employmentType === 'Self-employment'}
+                  onChange={handleEmploymentTypeChange}
+                  autoComplete='Self-employment'
                   className="mr-2"
                   />
                  Self-Employed
                 </label>
-                {isSelfEmployed &&(
-                  <select
-                  value={employmentType}
-                  onChange={(e)=>setEmplomentType(e.target.value)}
-                  className="w-full px-2 py-1 border rounded"
-                  required
-                  >
-                    {self.map((sel)=>(
-                      <option >{sel.type}</option>
-                    ))}
-                  </select>
-                )}
-
               </div>
-            </div>
+              {formData.employmentType  &&(
+                <select value={formData.employmentDetails}
+                onChange={handleEmploymentDetailsChange}
+                >
+                  <option value="">Select</option>
+                  {formData.employmentType === 'Salaried' ?(
+                    salary.map((option, index)=>(
+                      <option key={index} value={option.type}>
+                        {option.type}
+                      </option>
+                    ))
+                  ):(
+                    self.map((option,index)=>(
+                      <option key={index} value={option.type}>
+                        {option.type}
+                      </option>
+                    ))
+                  
+                  )}
+                </select>
+              )}
+            </div> 
+            
+   
 
-            <div className="sm:col-span-4">
-                      <label htmlFor="hAccount" className="block text-sm font-medium leading-6 text-gray-900">
-                      HDFC/Account No
-                      </label>
-                      <div className="mt-2">
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        
-                          <input
-                            type="text"
-                            name="hAccount"
-                            id="hAccount"
-                            autoComplete="hAccount"
-                            className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                            placeholder="alternative number"
-                           
-                          />
-                        </div>
-                      </div>
+                  <div className="sm:col-span-4">
+                            <label htmlFor="hdfcAcc" className="block text-sm font-medium leading-6 text-gray-900">
+                            HDFC/Account No
+                            </label>
+                            <div className="mt-2">
+                              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                              
+                                <input
+                                  type="nubmer"
+                                  name="hdfcAcc"
+                                  id="hdfcAcc"
+                                  value={formData.hdfcAcc}
+                                  onChange={handleInputChange}
+                                  autoComplete="hdfcAcc"
+                                  className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                  placeholder="HDFC ACCount NO"
+                                
+                                />
+                              </div>
+                            </div>
                   </div>
 
                   <div className="sm:col-span-4">
-                      <label htmlFor="othaccount" className="block text-sm font-medium leading-6 text-gray-900">
+                      <label htmlFor="otherAcc" className="block text-sm font-medium leading-6 text-gray-900">
                       Other Bank Account No
                       </label>
                       <div className="mt-2">
                         <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                         
                           <input
-                            type="text"
-                            name="othaccount"
-                            id="othaccount"
-                            autoComplete="othaccount"
+                            type="number"
+                            name="otherAcc"
+                            id="otherAcc"
+                            value={formData.otherAcc}
+                            onChange={handleInputChange}
+                            autoComplete="otherAcc"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="Account Number"
                            
@@ -1099,306 +1149,41 @@ const handleSubmit=async (event)=>{
 
             
             
-            <div className="col-span-full">
-              <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                Remark
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={''}
-                />
-              </div>
-              <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
-            </div>
+                <div className="col-span-full">
+                  <label  className="block text-sm font-medium leading-6 text-gray-900">
+                    Remark
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      type='text'
+                      name='remark'
+                      id='remark'
+                    
+                      value={formData.remark}
+                      onChange={handleInputChange}
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
+                </div>
+      
 
-            {/* <div className="col-span-full">
-              <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
-                Photo
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
-                <button
-                  type="button"
-                  className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
-                </button>
-              </div>
-            </div> */}
-
-            {/* <div className="col-span-full">
-              <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
-                Cover photo
-              </label>
-              <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                <div className="text-center">
-                  <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
-                  <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                    <label
-                      htmlFor="file-upload"
-                      className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                  <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    Cancel
+                  </button>
+                    <button
+                      type="submit"
+                      onClick={handleSubmit}
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      <span>Upload a file</span>
-                      <input id="file-upload" name="file-upload" type="file" className="sr-only" />
-                    </label>
-                    <p className="pl-1">or drag and drop</p>
-                  </div>
-                  <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                      Save
+                    </button>
                 </div>
-              </div>
-            </div> */}
-          </div>
-        </div>
-
-        {/* <div className="border-b border-gray-900/10 pb-12"> */}
-          {/* <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p> */}
-
-          {/* <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                First name
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="first-name"
-                  id="first-name"
-                  autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
-                Last name
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="last-name"
-                  id="last-name"
-                  autoComplete="family-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-4">
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-                Country
-              </label>
-              <div className="mt-2">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="street-address" className="block text-sm font-medium leading-6 text-gray-900">
-                Street address
-              </label>
-              <div className="mt-2">
-                <input
-                  type="radio"
-                  name="street-address"
-                  id="street-address"
-                  autoComplete="street-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2 sm:col-start-1">
-              <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
-                City
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  autoComplete="address-level2"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">
-                State / Province
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="region"
-                  id="region"
-                  autoComplete="address-level1"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="postal-code" className="block text-sm font-medium leading-6 text-gray-900">
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="postal-code"
-                  id="postal-code"
-                  autoComplete="postal-code"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div> */}
-          {/* </div> */}
-        {/* </div> */}
-
-        {/* <div className="border-b border-gray-900/10 pb-12"> */}
-          {/* <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            We'll always let you know about important changes, but you pick what else you want to hear about.
-          </p> */}
-
-          {/* <div className="mt-10 space-y-10">
-            <fieldset>
-              <legend className="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
-              <div className="mt-6 space-y-6">
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="comments"
-                      name="comments"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="comments" className="font-medium text-gray-900">
-                      Comments
-                    </label>
-                    <p className="text-gray-500">Get notified when someones posts a comment on a posting.</p>
-                  </div>
-                </div>
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="candidates"
-                      name="candidates"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="candidates" className="font-medium text-gray-900">
-                      Candidates
-                    </label>
-                    <p className="text-gray-500">Get notified when a candidate applies for a job.</p>
-                  </div>
-                </div>
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="offers"
-                      name="offers"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="offers" className="font-medium text-gray-900">
-                      Offers
-                    </label>
-                    <p className="text-gray-500">Get notified when a candidate accepts or rejects an offer.</p>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
-              <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
-              <div className="mt-6 space-y-6">
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="male"
-                    name="gender"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="male" className="block text-sm font-medium leading-6 text-gray-900">
-                    male
-                  </label>
-                </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="female"
-                    name="gender"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="female" className="block text-sm font-medium leading-6 text-gray-900">
-                    female
-                  </label>
-                </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="others"
-                    name="gender"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
-                    No push notifications
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div> */}
-        {/* </div> */}
-      </div>
-
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
-      </div>
-     
+            
+     </div>
+     </div>
+    </div>
     </form>
     
   )
