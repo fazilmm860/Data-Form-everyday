@@ -155,7 +155,7 @@ const FormData = () => {
   
 
   const [formData,setFormData]=useState({
-    date: new Date(),
+    date: new Date().toLocaleDateString(),
     exeName: '',
     dseCode: '',
     cardSelect: '',
@@ -216,16 +216,18 @@ const FormData = () => {
  
 
   const handleDateChanged=(dates)=>{
+    const formattedDate= dates.toLocaleDateString();
     setFormData({
       ...formData,
-      date:dates
+      date:formattedDate
       
     })
   }
   const handleDateOfBirthChange=(dob)=>{
+    const formattedDated=dob.toLocaleDateString();
     setFormData({
       ...formData,
-      dateOfBirth:dob
+      dateOfBirth:formattedDated
       
     })
   }
@@ -364,7 +366,7 @@ const handleSubmit=async (event)=>{
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Fill this from properly
           </p>
-            <DatePicker className="mt-4" selected={formData.date} onChange={handleDateChanged}/>
+            <DatePicker className="mt-4" selected={new Date(formData.date)} onChange={handleDateChanged}/>
             <div div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
@@ -529,7 +531,7 @@ const handleSubmit=async (event)=>{
                   <DatePicker
                     id="dateOfBirth"
                     name='dateOfBirth'
-                    selected={formData.dateOfBirth}
+                    selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
                     onChange={handleDateOfBirthChange}
                     peekNextMonth
                     showMonthDropdown
