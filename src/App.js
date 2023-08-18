@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Dummy from './components/Dummy';
 import DefaultTable from './components/DefaultTable.jsx';
 import { Switch } from '@material-tailwind/react';
+import HomePage from './components/HomePage';
 
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
           <Navbar />
 
           <Routes>
-            <Route path="/" element={<FormData />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/form" element={<FormData />} />
             <Route path="/admin" element={<DefaultTable />} />
           </Routes>
         </div>
