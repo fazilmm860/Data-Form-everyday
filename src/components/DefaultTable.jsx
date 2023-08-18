@@ -1,14 +1,14 @@
-import { Card,  Typography } from "@material-tailwind/react";
+import {  Card,  Typography } from "@material-tailwind/react";
 import axios from "axios";
-
 import { useEffect, useState } from "react";
+
 
 
 const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"First Name","Middle Name", "Last Name","DOB","Gender","Marital State",
 "Spouse Name","Qualification","Other","Pan Number","Mobile Number","Alt.Mobile Number","Email","Residence.Flat","Residence.Street",
 "Residence.City","Residence.state","Residence.Landmark","Residence.Pincode","Permanent.Flat","Permanent.Street","Permanent.City","Permanent.State","Permanent.Landmark",
 "Permanent.Pincode","Period at current Residence","Residence is","Company Name","Company.Flat","Company.Street","Company.City","Company.State","Company.LandMark","Company.PinCode",
-"Designation","Tel.No","Office E-Mail ID","Occupation-type","Sector","HDFC Account No","Other Bank Account No","Remarks","Edit","Delete"];
+"Designation","Tel.No","Office E-Mail ID","Occupation-type","Sector","HDFC Account No","Other Bank Account No","Image","Remarks","Edit","Delete"];
 
 
 
@@ -16,7 +16,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
  function DefaultTable() {
     const [formData, seFormtData] = useState([]);
 
-
+    
 useEffect(()=>{
     fetchData();
 },[]);
@@ -33,6 +33,7 @@ const fetchData=async()=>{
 }
 
 return (
+    <>
     <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
@@ -488,13 +489,11 @@ return (
                 </td>
                 <td className={classes}>
                     <Typography
-                        as="a"
-                        href="#"
                         variant="small"
                         color="blue-gray"
-                        className="font-medium"
+                        className="font-normal"
                     >
-                        Edit
+                        {item.profileImage}
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -505,7 +504,30 @@ return (
                         color="blue-gray"
                         className="font-medium"
                     >
-                        Delete
+                      <button
+                      type="submit"
+                      
+                      className="rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                     Edit
+                    </button>
+                    </Typography>
+                </td>
+                <td className={classes}>
+                    <Typography
+                        as="a"
+                        href="#"
+                        variant="small"
+                        color="blue-gray"
+                        className="font-medium"
+                    >
+                       <button
+                      type="submit"
+                     
+                      className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Delete
+                    </button>
                     </Typography>
                 </td>
                 
@@ -513,12 +535,15 @@ return (
             
             )
          })}
+         
         </tbody>
       </table>
     </Card>
+   
+ </>
   );
 }
 
-                   
+
                   
 export default DefaultTable

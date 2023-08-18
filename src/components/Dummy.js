@@ -1,44 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
-const TableComponent = () => {
-    const [data, setData] = useState([]);
+const FormComponent = () => {
+    const [isPromptOpen, setIsPromptOpen] = useState(false);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const handleSaveClick = () => {
+        setIsPromptOpen(true);
+    };
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/getdata`);
-            setData(response.data);
-        } catch (error) {
-            console.error(`Error in fetching data: ${error}`);
-        }
+    const handleConfirmClick = () => {
+        // Perform the actual save action here
+        setIsPromptOpen(false);
+    };
+
+    const handleCancelClick = () => {
+        setIsPromptOpen(false);
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <table className="w-full table-auto">
-                <thead>
-                    <tr>
-                        <th className="px-4 py-2">Column Header 1</th>
-                        <th className="px-4 py-2">Column Header 2</th>
-                        {/* Add more headers as needed */}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item, index) => (
-                        <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-                            <td className="border px-4 py-2">{item.column1}</td>
-                            <td className="border px-4 py-2">{item.column2}</td>
-                            {/* Add more cells based on your data structure */}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="flex flex-col items-center justify-center h-screen">
+            <form className="w-full max-w-md">
+                {/* Your form fields go here */}
+
+                <button
+                    type="button"
+                    onClick={handleSaveClick}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                    Save
+                </button>
+
+                {isPromptOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+                        <div className="bg-white p-4 rounded shadow-md">
+                            <p className="mb-4">Are you sure you want to save?</p>
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={handleCancelClick}
+                                    className="text-gray-500 mr-2 hover:text-gray-700"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleConfirmClick}
+                                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </form>
         </div>
     );
 };
 
-export default TableComponent;
+export default FormComponent;

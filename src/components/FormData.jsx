@@ -213,25 +213,46 @@ const FormData = () => {
     remark: ''
   })
 
- 
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
 
-  const handleDateChanged=(dates)=>{
-    const formattedDate= dates.toLocaleDateString();
-    setFormData({
-      ...formData,
-      date:formattedDate
-      
-    })
-  }
-  const handleDateOfBirthChange=(dob)=>{
-    const formattedDated=dob.toLocaleDateString();
-    setFormData({
-      ...formData,
-      dateOfBirth:formattedDated
-      
-    })
-  }
- 
+
+
+  const handleConfirmClick = () => {
+    // Perform the actual save action here
+    setIsPromptOpen(false);
+  };
+
+  const handleCancelClick = () => {
+    setIsPromptOpen(false);
+  };
+
+  const handleDateChanged = (dates) => {
+    try {
+      const todayDate = new Date(dates);
+      todayDate.setHours(0, 0, 0, 0);
+      console.log("Today's Date:", todayDate);
+      setFormData({
+        ...formData,
+        date: todayDate,
+      });
+    } catch (error) {
+      console.error("Error in handleDateChanged:", error);
+    }
+  };
+  
+  const handleDateOfBirthChange = (dob) => {
+    try {
+      const selectedDate = new Date(dob);
+      const formattedDate = selectedDate.toLocaleDateString();
+      console.log("Selected Date of Birth:", selectedDate);
+      setFormData({
+        ...formData,
+        dateOfBirth: formattedDate,
+      });
+    } catch (error) {
+      console.error("Error in handleDateOfBirthChange:", error);
+    }
+  };
  
   const handleEmploymentTypeChange = (event) => {
     const newEmploymentType = event.target.value;
@@ -279,22 +300,25 @@ setFormData((prevData)=>({
 
 const handleSubmit=async (event)=>{
   //  event.preventdefault();
+  setIsPromptOpen(true);
   try{
     let formDataToSend = formData;
-
+    
     if (formData.sameAsAbove) {
       formDataToSend = {
         ...formDataToSend,
         permanentAddress: formData.residenceAddress,
       };
     }
+    
+
         const url=`http://localhost:5000/api`
-        const response=await axios.post(`${url}/sendData`,formDataToSend)
+        const response=await axios.post(`${url}/sendData`,formDataToSend,)
 
         if(response.status===201){
           console.log(`Data submitted succesfully `);
           setFormData({
-            date: '',
+            date: new Date().toLocaleDateString(),
             exeName: '',
             dseCode: '',
             cardSelect: '',
@@ -1148,6 +1172,7 @@ const handleSubmit=async (event)=>{
                         </div>
                       </div>
                   </div>
+                  
 
             
             
@@ -1181,6 +1206,28 @@ const handleSubmit=async (event)=>{
                     >
                       Save
                     </button>
+                    
+        {isPromptOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div className="bg-white p-4 rounded shadow-md">
+              <p className="mb-4">Are you sure you want to save?</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleCancelClick}
+                  className="text-gray-500 mr-2 hover:text-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmClick}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
                 </div>
             
      </div>
