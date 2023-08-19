@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
-import ResidenceAddressForm from './ResidenceAddressForm'
-import PermanentAddressForm from './PermanentAddressForm'
 import EditResidenceAddress from './EditResidenceAddress'
 import EditPermanentAddress from './EditPermanentAddress'
 

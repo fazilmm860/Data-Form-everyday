@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import ResidenceAddressForm from './ResidenceAddressForm';
 import PermanentAddressForm from './PermanentAddressForm';
-import EditModel from "./EditModel";
+
 
 
 const selectcard=[
@@ -215,7 +215,7 @@ const FormData = () => {
     remark: ''
   })
 
-  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  // const [isPromptOpen, setIsPromptOpen] = useState(false);
 
 
 
@@ -223,14 +223,14 @@ const FormData = () => {
 
 
 
-  const handleConfirmClick = () => {
-    // Perform the actual save action here
-    setIsPromptOpen(false);
-  };
+  // const handleConfirmClick = () => {
+  //   // Perform the actual save action here
+  //   setIsPromptOpen(false);
+  // };
 
-  const handleCancelClick = () => {
-    setIsPromptOpen(false);
-  };
+  // const handleCancelClick = () => {
+  //   setIsPromptOpen(false);
+  // };
 
   const handleDateChanged = (dates) => {
     try {
@@ -306,7 +306,7 @@ setFormData((prevData)=>({
 
 const handleSubmit=async (event)=>{
   //  event.preventdefault();
-  setIsPromptOpen(true);
+  // setIsPromptOpen(true);
   try{
     let formDataToSend = formData;
     
