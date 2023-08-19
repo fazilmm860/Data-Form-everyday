@@ -153,7 +153,7 @@ const self=[
 ]
 
 
-const FormData = () => {
+const FormDatas = () => {
   
 
   const [formData,setFormData]=useState({
@@ -210,27 +210,13 @@ const FormData = () => {
     officeEmail: '',
     employmentType: '',
     employmentDetails: '',
+    aadharFront:'',
+    aadharBack:'',
+    panCard:'',
     hdfcAcc: '',
     otherAcc: '',
     remark: ''
   })
-
-  // const [isPromptOpen, setIsPromptOpen] = useState(false);
-
-
-
-
-
-
-
-  // const handleConfirmClick = () => {
-  //   // Perform the actual save action here
-  //   setIsPromptOpen(false);
-  // };
-
-  // const handleCancelClick = () => {
-  //   setIsPromptOpen(false);
-  // };
 
   const handleDateChanged = (dates) => {
     try {
@@ -316,10 +302,26 @@ const handleSubmit=async (event)=>{
         permanentAddress: formData.residenceAddress,
       };
     }
-    
+       //Create FormData object to include Image files
+       const formDataWithImages=new FormData();
+       formDataWithImages.append('aadharFront',formData.aadharFront);
+       formDataWithImages.append('aadharBack',formData.aadharBack);
+       formDataWithImages.append('panCard',formData.panCard);
+
+        // Append the rest of the form data to FormData
+        for (const key in  formDataToSend){
+          if(typeof formDataToSend[key]==='object'){
+            for(const subKey in formDataToSend[key]){
+              formDataWithImages.append(`${key}.${subKey}`,formDataToSend[key][subKey]);
+
+            }
+          }else{
+            formDataWithImages.append(key,formDataToSend[key]);
+          }
+        }
 
         const url=`http://localhost:5000/api`
-        const response=await axios.post(`${url}/sendData`,formDataToSend,)
+        const response=await axios.post(`${url}/sendData`,formDataWithImages,)
 
         if(response.status===201){
           console.log(`Data submitted succesfully `);
@@ -377,6 +379,9 @@ const handleSubmit=async (event)=>{
             officeEmail: '',
             employmentType: '',
             employmentDetails: '',
+            aadharFront:'',
+            aadharBack:'',
+            panCard:'',
             hdfcAcc: '',
             otherAcc: '',
             remark: ''
@@ -1224,5 +1229,5 @@ const handleSubmit=async (event)=>{
   )
 }
 
-export default FormData
+export default FormDatas
 
