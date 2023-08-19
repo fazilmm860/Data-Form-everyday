@@ -1,6 +1,7 @@
 import {  Card,  Typography } from "@material-tailwind/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import EditModel from "./EditModel";
 
 
 
@@ -14,9 +15,45 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
 
 
  function DefaultTable() {
-    const [formData, seFormtData] = useState([]);
+    const [formData, setFormData] = useState([]);
 
-    
+    const [editData, setEditData] = useState(null);
+
+    const handleEditClick=(data)=>{
+        setEditData(data)
+      }
+      const handleEditSave=async(editedData)=>{
+        try {
+          const url=`http://localhost:5000/api`
+          const response=await axios.put(`${url}/edit/${editedData._id}`,editedData)
+          console.log(response.data.message);
+          
+          const updatedFormData=formData.map((item)=>
+          item._id === editedData._id ? editedData :item
+          )
+          setFormData(updatedFormData)
+          console.log(`updated successfully ${updatedFormData}`); 
+          setEditData(null)
+        } catch (error) {
+          console.error(`Error in updating data: ${error}`);
+        }
+      }
+
+      const handleEditCancel=()=>{
+        setEditData(null)
+      };
+      
+  
+    const handleDeleteClick = async (itemId) => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/api/delete/${itemId}`);
+            console.log(response.data.message);
+            // Optionally, you can fetch data again after deletion
+            fetchData();
+        } catch (error) {
+            console.error(`Error in deleting data: ${error}`);
+        }
+    };
 useEffect(()=>{
     fetchData();
 },[]);
@@ -24,7 +61,7 @@ const fetchData=async()=>{
     try{
         
         const response=await axios.get(`http://localhost:5000/api/getdata`)
-        seFormtData(response.data.message)
+        setFormData(response.data.message)
         console.log(Array.isArray(response.data.message)); 
         console.log(response.data);
     }catch(error){
@@ -58,7 +95,7 @@ return (
             const residenceAddress=item.residenceAddress || {};
             const permanentAddress=item.permanentAddress || {};
             const companyAddress=item.companyAddress || {};
-            // const isLast = index === item.length - 1;
+            const isLast = index === item.length - 1;
             const classes =  "p-4 border-b border-blue-gray-50";
  
             return (
@@ -232,7 +269,7 @@ return (
                         color="blue-gray"
                         className="font-normal"
                     >
-                        {residenceAddress.flat}
+                       {residenceAddress.flat}
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -241,7 +278,7 @@ return (
                         color="blue-gray"
                         className="font-normal"
                     >
-                        {residenceAddress.street}
+                        {residenceAddress.street }
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -250,7 +287,7 @@ return (
                         color="blue-gray"
                         className="font-normal"
                     >
-                        {residenceAddress.city}
+                        {residenceAddress.city }
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -259,7 +296,7 @@ return (
                         color="blue-gray"
                         className="font-normal"
                     >
-                        {residenceAddress.state}
+                        {residenceAddress.state }
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -268,7 +305,7 @@ return (
                         color="blue-gray"
                         className="font-normal"
                     >
-                        {residenceAddress.landMark}
+                        {residenceAddress.landMark }
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -277,7 +314,7 @@ return (
                         color="blue-gray"
                         className="font-normal"
                     >
-                        {residenceAddress.pincode}
+                        {residenceAddress.pincode }
                     </Typography>
                 </td>
                 <td className={classes}>
@@ -505,8 +542,8 @@ return (
                         className="font-medium"
                     >
                       <button
-                      type="submit"
-                      
+                    type="submit"
+                      onClick={ ()=>handleEditClick(item)}
                       className="rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                      Edit
@@ -518,6 +555,7 @@ return (
                         as="a"
                         href="#"
                         variant="small"
+                        onClick={() => handleDeleteClick(item._id)}
                         color="blue-gray"
                         className="font-medium"
                     >
@@ -539,7 +577,20 @@ return (
         </tbody>
       </table>
     </Card>
-   
+    {editData && (
+        <EditModel
+          data={{
+            ...editData,
+        }}
+          onSave={handleEditSave}
+          onCancel={handleEditCancel}
+        />
+      )}
+ {/* {editData && (
+  <EditModel data={editData} onSave={() => handleEditSave(editData)} onCancel={handleEditCancel} />
+)} */}
+{/* <EditModel data={editData} onSave={handleEditSave} onCancel={handleEditCancel} /> */}
+
  </>
   );
 }
