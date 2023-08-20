@@ -13,18 +13,20 @@ import ImageUploadForm from './components/ImageUploadForm';
 function App() {
   return (
     <div>
-      {/* <Router>
+      <Router>
         <div>
           <Navbar />
 
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/form" element={<FormData />} />
+            <Route path="/image" element={<ImageUploadForm />} />
             <Route path="/admin" element={<DefaultTable />} />
           </Routes>
         </div>
-      </Router> */}
-      <ImageUploadForm />
+      </Router>
+
+
     </div>
 
 

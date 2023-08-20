@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import ResidenceAddressForm from './ResidenceAddressForm';
 import PermanentAddressForm from './PermanentAddressForm';
+import { Link } from 'react-router-dom';
 
 
 
@@ -377,7 +378,8 @@ const handleSubmit=async (event)=>{
 
 }
   return (
-
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+    <div className="border rounded-lg shadow-lg p-8 bg-white">
       <form className='flex flex-col justify-center items-center'>
       <div className="space-y-12 ">
         <div className="border-b border-gray-900/10 pb-12">
@@ -1185,14 +1187,22 @@ const handleSubmit=async (event)=>{
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">Give your valuable remarks</p>
                 </div>
-      
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                  <Link to='/image'>  
+                  <button type="button" className="rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600" required>
+                    Upload Images
+                  </button>
+                  </Link>
+                  </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
+                  
                   <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                     Cancel
                   </button>
+                 
                     <button
                       type="submit"
                       onClick={handleSubmit}
@@ -1208,7 +1218,8 @@ const handleSubmit=async (event)=>{
      </div>
     </div>
     </form>
-    
+    </div>
+    </div>
   )
 }
 
