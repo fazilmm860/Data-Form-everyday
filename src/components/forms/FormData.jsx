@@ -210,9 +210,9 @@ const FormDatas = () => {
     officeEmail: '',
     employmentType: '',
     employmentDetails: '',
-    aadharFront:'',
-    aadharBack:'',
-    panCard:'',
+    aadharFront:null,
+    aadharBack:null,
+    panCard:null,
     hdfcAcc: '',
     otherAcc: '',
     remark: ''
@@ -291,8 +291,7 @@ setFormData((prevData)=>({
 }
 
 const handleSubmit=async (event)=>{
-  //  event.preventdefault();
-  // setIsPromptOpen(true);
+  
   try{
     let formDataToSend = formData;
     
@@ -302,27 +301,11 @@ const handleSubmit=async (event)=>{
         permanentAddress: formData.residenceAddress,
       };
     }
-       //Create FormData object to include Image files
-       const formDataWithImages=new FormData();
-       formDataWithImages.append('aadharFront',formData.aadharFront);
-       formDataWithImages.append('aadharBack',formData.aadharBack);
-       formDataWithImages.append('panCard',formData.panCard);
-
-        // Append the rest of the form data to FormData
-        for (const key in  formDataToSend){
-          if(typeof formDataToSend[key]==='object'){
-            for(const subKey in formDataToSend[key]){
-              formDataWithImages.append(`${key}.${subKey}`,formDataToSend[key][subKey]);
-
-            }
-          }else{
-            formDataWithImages.append(key,formDataToSend[key]);
-          }
-        }
-
+    
+       
         const url=`http://localhost:5000/api`
-        const response=await axios.post(`${url}/sendData`,formDataWithImages,)
-
+        const response=await axios.post(`${url}/sendData`,formDataToSend)
+        console.log('formDataToSend:', formDataToSend);
         if(response.status===201){
           console.log(`Data submitted succesfully `);
           setFormData({
@@ -379,14 +362,15 @@ const handleSubmit=async (event)=>{
             officeEmail: '',
             employmentType: '',
             employmentDetails: '',
-            aadharFront:'',
-            aadharBack:'',
-            panCard:'',
+            aadharFront:null,
+            aadharBack:null,
+            panCard:null,
             hdfcAcc: '',
             otherAcc: '',
             remark: ''
           })
         }
+
   }catch(error){
     console.log(error);
   }
@@ -1137,8 +1121,7 @@ const handleSubmit=async (event)=>{
                 </select>
               )}
             </div> 
-            
-   
+          
 
                   <div className="sm:col-span-4">
                             <label htmlFor="hdfcAcc" className="block text-sm font-medium leading-6 text-gray-900">

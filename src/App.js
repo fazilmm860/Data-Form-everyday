@@ -2,17 +2,18 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
-import Dummy from './components/Dummy';
+
 import DefaultTable from './components/DefaultTable.jsx';
 import { Switch } from '@material-tailwind/react';
 import HomePage from './components/HomePage';
 import FormData from './components/forms/FormData';
+import ImageUploadForm from './components/ImageUploadForm';
 
 
 function App() {
   return (
     <div>
-      <Router>
+      {/* <Router>
         <div>
           <Navbar />
 
@@ -22,8 +23,8 @@ function App() {
             <Route path="/admin" element={<DefaultTable />} />
           </Routes>
         </div>
-      </Router>
-
+      </Router> */}
+      <ImageUploadForm />
     </div>
 
 
