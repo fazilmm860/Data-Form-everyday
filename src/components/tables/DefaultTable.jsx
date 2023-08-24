@@ -1,7 +1,8 @@
 import {  Card,  Typography } from "@material-tailwind/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import EditModel from "./edit/EditModel";
+import EditModel from "../edit/EditModel";
+import { Link } from "react-router-dom";
 
 
 
@@ -9,7 +10,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
 "Spouse Name","Qualification","Other","Pan Number","Mobile Number","Alt.Mobile Number","Email","Residence.Flat","Residence.Street",
 "Residence.City","Residence.state","Residence.Landmark","Residence.Pincode","Permanent.Flat","Permanent.Street","Permanent.City","Permanent.State","Permanent.Landmark",
 "Permanent.Pincode","Period at current Residence","Residence is","Company Name","Company.Flat","Company.Street","Company.City","Company.State","Company.LandMark","Company.PinCode",
-"Designation","Tel.No","Office E-Mail ID","Occupation-type","Sector","HDFC Account No","Other Bank Account No","Image","Remarks","Edit","Delete"];
+"Designation","Tel.No","Office E-Mail ID","Occupation-type","Sector","HDFC Account No","Other Bank Account No","Remarks","Image","Edit","Delete"];
 
 
 
@@ -524,15 +525,27 @@ return (
                         {item.remark}
                     </Typography>
                 </td>
+            
                 <td className={classes}>
+                <Link to="/getImage">
                     <Typography
+                        as="a"
+                        href="#"
                         variant="small"
                         color="blue-gray"
-                        className="font-normal"
+                        className="font-medium"
                     >
-                        {item.profileImage}
+                      <button
+                    type="submit"
+                      
+                      className="rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                     get-Image
+                    </button>
                     </Typography>
+                    </Link>
                 </td>
+           
                 <td className={classes}>
                     <Typography
                         as="a"
@@ -586,10 +599,7 @@ return (
           onCancel={handleEditCancel}
         />
       )}
- {/* {editData && (
-  <EditModel data={editData} onSave={() => handleEditSave(editData)} onCancel={handleEditCancel} />
-)} */}
-{/* <EditModel data={editData} onSave={handleEditSave} onCancel={handleEditCancel} /> */}
+ 
 
  </>
   );

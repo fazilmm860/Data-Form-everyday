@@ -33,7 +33,7 @@ const ImageUploadForm = () => {
                 }
             });
 
-            console.log('Images uploaded successfully', response.data.message);
+            console.log('Images uploaded successfully', response.data);
         } catch (error) {
             console.error('Image upload failed', error);
         }
@@ -43,7 +43,7 @@ const ImageUploadForm = () => {
         <div className="min-h-screen bg-gray-100 flex justify-center items-center">
             <div className="border rounded-lg shadow-lg p-8 bg-white">
                 <h1 className="text-2xl font-bold mb-4">Image Upload Form</h1>
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <form onSubmit={handleSubmit} method="POST" enctype="multipart/form-data" action='upload'>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">Aadhar Front</label>
                         < input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setAadharFront)} />
@@ -64,11 +64,11 @@ const ImageUploadForm = () => {
                         <label className="block text-sm font-medium text-gray-700">Signature of Customer</label>
                         < input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setSignature)} />
                     </div>
-
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                        Upload Images
-                    </button>
-
+                    <Link to="/">
+                        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                            Upload Images
+                        </button>
+                    </Link>
                 </form>
             </div>
         </div >
