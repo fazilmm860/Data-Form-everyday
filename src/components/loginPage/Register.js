@@ -64,7 +64,7 @@ const Register = () => {
             })
         } else {
             const url = `http://localhost:5000/api`
-            const data = await fetch(`${url}/register`, {
+            const data = await fetch(`http://localhost:5000/api/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -143,10 +143,10 @@ const Register = () => {
                     </label>
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="confirmPassword"
+                        id="cpassword"
                         type={!cpassShow ? "password" : "text"}
                         placeholder="Confirm Password"
-                        name="confirmPassword"
+                        name="cpassword"
                         value={inpval.cpassword}
                         onChange={setVal}
                     />
