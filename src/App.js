@@ -10,6 +10,7 @@ import FormData from './components/forms/FormData';
 import ImageUploadForm from './components/ImageUploadForm';
 import ImageTable from './components/tables/ImageTable'
 import ImageGrid from './components/tables/ImageGrid';
+import Register from './components/loginPage/Register';
 
 function App() {
   return (
@@ -18,16 +19,17 @@ function App() {
         <div>
           <Navbar />
 
-          <Routes>
+          {/* <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/form" element={<FormData />} />
             <Route path="/image" element={<ImageUploadForm />} />
             <Route path="/admin" element={<DefaultTable />} />
             <Route path="/getImage" element={<ImageTable />} />
-          </Routes>
+          </Routes> */}
         </div>
-      </Router>
+        <Register />
 
+      </Router>
 
 
     </div>
