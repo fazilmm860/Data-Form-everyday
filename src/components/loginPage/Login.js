@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Navlink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 
 const Login = () => {
@@ -115,8 +115,8 @@ const Login = () => {
                         </button>
                     </div>
 
-                    <p style={{ color: "black", fontWeight: "bold" }}>Don't have an Account ?<Link to="/login"></Link></p>
-                    <p style={{ color: "black", fontWeight: "bold" }}>Forgot Password  <Link to="/password-reset">Click Here</Link> </p>
+                    <p style={{ color: "black", fontWeight: "bold" }}>Don't have an Account ?<NavLink to="/login"></NavLink></p>
+                    <p style={{ color: "black", fontWeight: "bold" }}>Forgot Password  <NavLink to="/password-reset">Click Here</NavLink> </p>
 
                 </form>
                 <ToastContainer />

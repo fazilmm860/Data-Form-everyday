@@ -1,5 +1,7 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+
+
 
 import Navbar from './components/Navbar';
 
@@ -14,35 +16,72 @@ import Register from './components/loginPage/Register';
 import Login from './components/loginPage/Login';
 import PasswordReset from './components/loginPage/PasswordReset';
 import ForgotPassword from './components/loginPage/ForgotPassword';
+import { useContext, useEffect, useState } from 'react';
+import { LoginContext } from './components/ContextProvider/Context';
+import Error from './components/loginPage/Error'
 
 function App() {
+  const [data, setData] = useState(false);
+
+  const { logindata, setLoginData } = useContext(LoginContext)
+
+  const history = useNavigate()
+
+  const DashboardValid = async () => {
+    let token = localStorage.getItem("userdatatoken");
+
+    const res = await fetch("/validuser", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token
+      }
+
+    })
+    const data = await res.json();
+
+    if (data.status == 401 || !data) {
+      console.log("user not valid");
+    } else {
+      console.log("user verify");
+      setLoginData(data)
+      history("/admin");
+    }
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      DashboardValid();
+      setData(true)
+    }, 2000)
+  }, [])
   return (
-    <div>
-      <Router>
-        <div>
-          <Navbar />
+    <>
 
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/form" element={<FormData />} />
-            <Route path="/image" element={<ImageUploadForm />} />
-            <Route path="/admin" element={<DefaultTable />} />
-            <Route path="/getImage" element={<ImageTable />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/password-reset" element={<PasswordReset />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-          </Routes>
+      <>
+        <Navbar />
 
-
-
-        </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/form" element={<FormData />} />
+          <Route path="/image" element={<ImageUploadForm />} />
+          <Route path="/admin" element={<DefaultTable />} />
+          <Route path="/getImage" element={<ImageTable />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/password-reset" element={<PasswordReset />} />
+          <Route path="/forgot-password/:id/tok" element={<ForgotPassword />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
 
 
-      </Router>
+
+      </>
 
 
-    </div>
+
+
+
+    </>
 
 
 

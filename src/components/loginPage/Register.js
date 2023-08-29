@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./mix.css"
@@ -164,7 +164,7 @@ const Register = () => {
                         Sign Up
                     </button>
                 </div>
-                <p>Already have a account?<Link to="/login"></Link></p>
+                <p>Already have a account?<NavLink to="/login"></NavLink></p>
 
             </form>
             <ToastContainer />
