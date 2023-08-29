@@ -13,6 +13,7 @@ import ImageGrid from './components/tables/ImageGrid';
 import Register from './components/loginPage/Register';
 import Login from './components/loginPage/Login';
 import PasswordReset from './components/loginPage/PasswordReset';
+import ForgotPassword from './components/loginPage/ForgotPassword';
 
 function App() {
   return (
@@ -30,7 +31,10 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/password-reset" element={<PasswordReset />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
+
+
 
         </div>
 
