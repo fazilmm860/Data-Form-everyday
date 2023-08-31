@@ -22,48 +22,6 @@ function classNames(...classes) {
 const Navbar = () => {
     const { logindata, setLoginData } = useContext(LoginContext);
 
-    const history = useNavigate();
-
-    const [anchorE1, setAnchorE1] = React.useState(null)
-    const open = Boolean(anchorE1);
-    const handleClick = (event) => {
-        setAnchorE1(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorE1(null);
-    };
-
-    const logoutuser = async () => {
-        let token = localStorage.getItem("userdatatoken");
-
-        const res = await fetch(`http://localhost:8000/api/logout`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                Accept: "application/json"
-            },
-            credentials: "include"
-        });
-        const data = await res.json();
-        console.log(data);
-
-        if (data.status == 201) {
-            console.log("user Logout");
-            localStorage.removeItem("usersdatatoken");
-            setLoginData(false)
-            history("/");
-        } else {
-            console.log("error");
-        }
-    }
-    const goForm = () => {
-        history("/admin")
-    }
-    const goError = () => {
-        history("*")
-    }
-
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
@@ -142,10 +100,15 @@ const Navbar = () => {
                                         leaveTo="transform opacity-0 scale-95"
                                     >
 
-                                        < Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        < Menu.Items
+                                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                        >
+
 
                                             {
-                                                logindata.ValidUserOne ? (
+
+
+                                                logindata ? (
                                                     <>
                                                         < Menu.Item >
 
@@ -153,10 +116,7 @@ const Navbar = () => {
                                                                 <div
 
                                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                                    onClick={() => {
-                                                                        goForm()
-                                                                        handleClose()
-                                                                    }}
+
                                                                 >
                                                                     Your Profile
                                                                 </div>
@@ -172,33 +132,33 @@ const Navbar = () => {
                                                                 <div
 
                                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                                    onClick={logoutuser}
+                                                                    onClick={() => {
+                                                                        // Perform logout action here
+                                                                        setLoginData(""); // Clear the login data
+                                                                    }}
                                                                 >
-                                                                    Sign out
+                                                                    Log out
                                                                 </div>
                                                             )}
                                                         </Menu.Item>
                                                     </>
                                                 ) : (
+                                                    <>
+                                                        <Menu.Item>
+                                                            {({ active }) => (
+                                                                <NavLink to="/login">
+                                                                    <div
+                                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                                    >
+                                                                        Log in
+                                                                    </div>
+                                                                </NavLink>
+                                                            )}
+                                                        </Menu.Item>
+                                                    </>
+                                                )}
+                                           
 
-                                                    < Menu.Item >
-                                                        {({ active }) => (
-                                                            <div
-
-                                                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                                onClick={() => {
-                                                                    goError()
-                                                                    handleClose()
-                                                                }}
-                                                            >
-                                                                Your Profile
-                                                            </div>
-                                                        )}
-
-
-                                                    </Menu.Item>
-
-                                                )
 
                                             }
                                         </Menu.Items>

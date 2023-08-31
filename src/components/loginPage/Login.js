@@ -12,6 +12,7 @@ const Login = () => {
     const history = useNavigate();
 
     const setVal = (e) => {
+        console.log(e.target.value);
         const { name, value } = e.target;
 
         setInpval(() => {
@@ -40,18 +41,21 @@ const Login = () => {
             });
         } else {
 
-            console.log("user login succesfully done");
+            // console.log("user login succesfully done");
 
             const data = await fetch(`http://localhost:8000/api/login`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    'Accept': 'application/json'
+                    "Content-Type": "application/json"
+
                 },
                 body: JSON.stringify({
                     email, password
                 })
             });
+            if (!data.ok) {
+                console.error('Request failed:', data.status, data.statusText);
+            }
 
             const res = await data.json();
             console.log(res);
@@ -83,8 +87,9 @@ const Login = () => {
                             type="email"
                             placeholder="Email"
                             name="email"
-                            onChange={setVal}
                             value={inpval.email}
+                            onChange={setVal}
+
 
                         />
                     </div>
@@ -112,14 +117,12 @@ const Login = () => {
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             type="submit"
                             onClick={loginuser}
-
-
                         >
                             Sign Up
                         </button>
                     </div>
 
-                    <p style={{ color: "black", fontWeight: "bold" }}>Don't have an Account ?<NavLink to="/login"></NavLink></p>
+
                     <p style={{ color: "black", fontWeight: "bold" }}>Forgot Password  <NavLink to="/password-reset">Click Here</NavLink> </p>
 
                 </form>
