@@ -21,13 +21,16 @@ const PasswordReset = () => {
                 position: "top-center"
             });
         } else {
-            const res = await fetch("http://localhost:5000/api/sendpasswordlink", {
+            const res = await fetch("http://localhost:8000/api/sendpasswordlink", {
                 method: "POST",
-                header: {
-                    "Content-Type": "application/json"
+                headers: {
+                    "Content-Type": "application/json",
+
                 },
                 body: JSON.stringify({ email })
             });
+
+            console.log('Response Status:', res.status);
             const data = await res.json();
             if (data.status == 201) {
                 setEmail("");
@@ -68,7 +71,9 @@ const PasswordReset = () => {
                             Send Reset Email
                         </button>
                     </div>
+                    <ToastContainer />
                 </div>
+
             </div>
         </>
     )

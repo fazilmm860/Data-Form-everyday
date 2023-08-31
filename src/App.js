@@ -19,6 +19,7 @@ import ForgotPassword from './components/loginPage/ForgotPassword';
 import { useContext, useEffect, useState } from 'react';
 import { LoginContext } from './components/ContextProvider/Context';
 import Error from './components/loginPage/Error'
+import { Box, CircularProgress } from '@mui/material';
 
 function App() {
   const [data, setData] = useState(false);
@@ -30,7 +31,7 @@ function App() {
   const DashboardValid = async () => {
     let token = localStorage.getItem("userdatatoken");
 
-    const res = await fetch("/validuser", {
+    const res = await fetch("http://localhost:8000/api/validuser", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,26 +57,34 @@ function App() {
   }, [])
   return (
     <>
+      {
+        data ? (
+          <>
 
-      <>
-        <Navbar />
+            <Navbar />
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/form" element={<FormData />} />
-          <Route path="/image" element={<ImageUploadForm />} />
-          <Route path="/admin" element={<DefaultTable />} />
-          <Route path="/getImage" element={<ImageTable />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/password-reset" element={<PasswordReset />} />
-          <Route path="/forgot-password/:id/tok" element={<ForgotPassword />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/form" element={<FormData />} />
+              <Route path="/image" element={<ImageUploadForm />} />
+              <Route path="/admin" element={<DefaultTable />} />
+              <Route path="/getImage" element={<ImageTable />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/password-reset" element={<PasswordReset />} />
+              <Route path="/forgotpassword/:id/:token" element={<ForgotPassword />} />
+              <Route path="*" element={<Error />} />
+            </Routes>
 
 
-      </>
+
+          </>
+        ) : <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          Loading... &nbsp;
+          <CircularProgress />
+        </Box>
+      }
+
 
 
 

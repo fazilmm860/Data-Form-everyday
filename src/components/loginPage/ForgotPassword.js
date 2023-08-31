@@ -17,10 +17,11 @@ const ForgotPassword = () => {
     const [message, setMessage] = useState("");
 
     const userValid = async () => {
-        const res = await fetch(`http://localhost:5000/api/forgotpassword/${id}/${token}`, {
+        const res = await fetch(`http://localhost:8000/api/forgotpassword/${id}/${token}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Accept': 'application/json'
             }
         });
         const data = await res.json()

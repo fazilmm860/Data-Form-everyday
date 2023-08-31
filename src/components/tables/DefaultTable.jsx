@@ -1,8 +1,10 @@
 import {  Card,  Typography } from "@material-tailwind/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import EditModel from "../edit/EditModel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginContext } from "../ContextProvider/Context";
+import { Box, CircularProgress } from "@mui/material";
 
 
 
@@ -25,7 +27,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
       }
       const handleEditSave=async(editedData)=>{
         try {
-          const url=`http://localhost:5000/api`
+          const url=`http://localhost:8000/api`
           const response=await axios.put(`${url}/edit/${editedData._id}`,editedData)
           console.log(response.data.message);
           
@@ -47,7 +49,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
   
     const handleDeleteClick = async (itemId) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/delete/${itemId}`);
+            const response = await axios.delete(`http://localhost:8000/api/delete/${itemId}`);
             console.log(response.data.message);
             // Optionally, you can fetch data again after deletion
             fetchData();
@@ -61,7 +63,7 @@ useEffect(()=>{
 const fetchData=async()=>{
     try{
         
-        const response=await axios.get(`http://localhost:5000/api/getdata`)
+        const response=await axios.get(`http://localhost:8000/api/getdata`)
         setFormData(response.data.message)
         console.log(Array.isArray(response.data.message)); 
         console.log(response.data);
@@ -69,10 +71,55 @@ const fetchData=async()=>{
         console.error(`Error in fetching data:${error}`);
     }
 }
+const {logindata,setLoginData}=useContext(LoginContext);
+
+const [data,setData]=useState(false);
+
+
+const history=useNavigate();
+
+const DashboardValid=async()=>{
+    let token=localStorage.getItem("userdatatoken");
+
+    const res=await fetch("http://localhost:8000/api/validuser",{
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":token
+        }
+    });
+    const data=await res.json();
+    
+    if(data.status==401 ||!data){
+        history("*");
+    }else{
+        console.log("user verify");
+        setLoginData(data)
+        history("/admin");
+    }
+}
+useEffect(()=>{
+    setTimeout(()=>{
+        DashboardValid();
+        setData(true)
+    },2000)
+},[])
 
 return (
+    
+    
+
     <>
     <Card className="h-full w-full overflow-scroll">
+    {
+        data ? <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <img src="./man.png" style={{ width: "200px", marginTop: 20 }} alt="" />
+            <h1>User Email:{logindata ? logindata.ValidUserOne.email : ""}</h1>
+        </div> : <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            Loading... &nbsp;
+            <CircularProgress />
+        </Box>
+    }
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>

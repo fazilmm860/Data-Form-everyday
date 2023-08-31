@@ -39,11 +39,14 @@ const Login = () => {
                 position: "top-center"
             });
         } else {
-            const url = `http://localhost:5000/api`
-            const data = await fetch(`${url}/login`, {
+
+            console.log("user login succesfully done");
+
+            const data = await fetch(`http://localhost:8000/api/login`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     email, password
@@ -51,10 +54,11 @@ const Login = () => {
             });
 
             const res = await data.json();
+            console.log(res);
 
             if (res.status === 201) {
                 localStorage.setItem("usersdatatoken", res.result.token);
-                history("/")
+                history("/admin")
                 setInpval({ ...inpval, email: "", password: "" })
             } else {
                 toast.error("Invalid Credentials", {

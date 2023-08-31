@@ -63,11 +63,11 @@ const Register = () => {
                 position: "top-center"
             })
         } else {
-            const url = `http://localhost:5000/api`
-            const data = await fetch(`http://localhost:5000/api/register`, {
+            const data = await fetch("http://localhost:8000/api/register", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     fname, email, password, cpassword
