@@ -26,7 +26,7 @@ const ImageUploadForm = () => {
         formDataImage.append('signature', signature);
 
         try {
-            const url = `http://localhost:5000/`
+            const url = `http://localhost:8000/`
             const response = await axios.post(`${url}images/upload`, formDataImage, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

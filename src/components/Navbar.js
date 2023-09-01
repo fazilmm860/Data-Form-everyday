@@ -7,9 +7,9 @@ import { LoginContext } from './ContextProvider/Context';
 
 
 const navigation = [
-    { name: 'FORMS', to: '/', current: true },
-    { name: 'ADMIN', to: '/admin', current: false },
-    { name: 'USER UPDATES', href: '#', current: false },
+    { name: 'FORMS', to: '/', current: false },
+    { name: 'ADMIN', to: '/login', current: false },
+    { name: 'USER UPDATES', to: '/*', current: false },
 
 ]
 

@@ -9,7 +9,7 @@ import DefaultTable from './components/tables/DefaultTable.jsx';
 import { Switch } from '@material-tailwind/react';
 import HomePage from './components/HomePage';
 import FormData from './components/forms/FormData';
-import ImageUploadForm from './components/ImageUploadForm';
+import ImageUploadForm from './components/forms/ImageUploadForm';
 import ImageTable from './components/tables/ImageTable'
 import ImageGrid from './components/tables/ImageGrid';
 import Register from './components/loginPage/Register';
@@ -20,6 +20,7 @@ import { useContext, useEffect, useState } from 'react';
 import { LoginContext } from './components/ContextProvider/Context';
 import Error from './components/loginPage/Error'
 import { Box, CircularProgress } from '@mui/material';
+import AdminPage from './components/AdminPage';
 
 function App() {
   const [data, setData] = useState(false);
@@ -67,7 +68,8 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/form" element={<FormData />} />
               <Route path="/image" element={<ImageUploadForm />} />
-              <Route path="/admin" element={<DefaultTable />} />
+              <Route path="/result-table" element={<DefaultTable />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/getImage" element={<ImageTable />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
