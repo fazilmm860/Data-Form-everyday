@@ -5,6 +5,7 @@ import EditModel from "../edit/EditModel";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginContext } from "../ContextProvider/Context";
 import { Box, CircularProgress } from "@mui/material";
+import ViewPage from "../viewpage/ViewPage";
 
 
 
@@ -12,7 +13,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
 "Spouse Name","Qualification","Other","Pan Number","Mobile Number","Alt.Mobile Number","Email","Residence.Flat","Residence.Street",
 "Residence.City","Residence.state","Residence.Landmark","Residence.Pincode","Permanent.Flat","Permanent.Street","Permanent.City","Permanent.State","Permanent.Landmark",
 "Permanent.Pincode","Period at current Residence","Residence is","Company Name","Company.Flat","Company.Street","Company.City","Company.State","Company.LandMark","Company.PinCode",
-"Designation","Tel.No","Office E-Mail ID","Occupation-type","Sector","HDFC Account No","Other Bank Account No","Remarks","Image","Edit","Delete"];
+"Designation","Tel.No","Office E-Mail ID","Occupation-type","Sector","HDFC Account No","Other Bank Account No","Remarks","View","Image","Edit","Delete"];
 
 
 
@@ -104,6 +105,7 @@ useEffect(()=>{
         setData(true)
     },2000)
 },[])
+
 
 return (
     
@@ -572,7 +574,29 @@ return (
                         {item.remark}
                     </Typography>
                 </td>
-            
+                  <td className={classes}>
+               <Link to='/view'>
+                    <Typography
+                        as="a"
+                       
+                        variant="small"
+                        color="blue-gray"
+                        className="font-medium"
+                    >
+                      <button
+                    type="submit"
+                    className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    
+                    >
+                     View
+                    </button>
+                   
+                    </Typography>
+                    </Link>
+                   
+
+                  
+             </td>
                 <td className={classes}>
                 <Link to="/getImage">
                     <Typography
@@ -636,6 +660,8 @@ return (
          
         </tbody>
       </table>
+
+    
     </Card>
     {editData && (
         <EditModel
@@ -644,7 +670,7 @@ return (
         }}
           onSave={handleEditSave}
           onCancel={handleEditCancel}
-        />
+        />  
       )}
  
 

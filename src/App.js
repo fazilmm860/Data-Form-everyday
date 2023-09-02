@@ -1,6 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
-
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useParams } from 'react-router-dom';
 
 
 import Navbar from './components/Navbar';
@@ -21,8 +20,11 @@ import { LoginContext } from './components/ContextProvider/Context';
 import Error from './components/loginPage/Error'
 import { Box, CircularProgress } from '@mui/material';
 import AdminPage from './components/AdminPage';
+import ViewPage from './components/viewpage/ViewPage';
+
 
 function App() {
+  const { itemId } = useParams();
   const [data, setData] = useState(false);
 
   const { logindata, setLoginData } = useContext(LoginContext)
@@ -69,6 +71,7 @@ function App() {
               <Route path="/form" element={<FormData />} />
               <Route path="/image" element={<ImageUploadForm />} />
               <Route path="/result-table" element={<DefaultTable />} />
+              <Route path="/view" element={<ViewPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/getImage" element={<ImageTable />} />
               <Route path="/register" element={<Register />} />
@@ -76,6 +79,7 @@ function App() {
               <Route path="/password-reset" element={<PasswordReset />} />
               <Route path="/forgotpassword/:id/:token" element={<ForgotPassword />} />
               <Route path="*" element={<Error />} />
+
             </Routes>
 
 

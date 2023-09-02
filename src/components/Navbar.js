@@ -84,13 +84,13 @@ const Navbar = () => {
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                src="https://img.freepik.com/premium-vector/anonymous-user-circle-icon-vector-illustration-flat-style-with-long-shadow_520826-1931.jpg"
                                                 alt=""
                                             />
                                         </Menu.Button>
                                     </div>
 
-                                    <Transition
+                                    {/* <Transition
                                         as={Fragment}
                                         enter="transition ease-out duration-100"
                                         enterFrom="transform opacity-0 scale-95"
@@ -100,70 +100,32 @@ const Navbar = () => {
                                         leaveTo="transform opacity-0 scale-95"
                                     >
 
-                                        < Menu.Items
-                                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                        >
-
-
-                                            {
-
-
-                                                logindata ? (
-                                                    <>
-                                                        < Menu.Item >
-
-                                                            {({ active }) => (
-                                                                <div
-
-                                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-
-                                                                >
-                                                                    Your Profile
-                                                                </div>
-                                                            )}
-
-
-
-                                                        </Menu.Item>
-
-
-                                                        <Menu.Item>
-                                                            {({ active }) => (
-                                                                <div
-
-                                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                                    onClick={() => {
-                                                                        // Perform logout action here
-                                                                        setLoginData(""); // Clear the login data
-                                                                    }}
-                                                                >
-                                                                    Log out
-                                                                </div>
-                                                            )}
-                                                        </Menu.Item>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <Menu.Item>
-                                                            {({ active }) => (
-                                                                <NavLink to="/login">
-                                                                    <div
-                                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                                    >
-                                                                        Log in
-                                                                    </div>
-                                                                </NavLink>
-                                                            )}
-                                                        </Menu.Item>
-                                                    </>
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <div
+                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    >
+                                                        Your Profile
+                                                    </div>
                                                 )}
-                                           
-
-
-                                            }
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <div
+                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        onClick={() => {
+                                                            // Perform logout action here
+                                                            setLoginData(''); // Clear the login data
+                                                        }}
+                                                    >
+                                                        Log out
+                                                    </div>
+                                                )}
+                                            </Menu.Item>
                                         </Menu.Items>
 
-                                    </Transition>
+                                    </Transition> */}
 
                                 </Menu>
 
