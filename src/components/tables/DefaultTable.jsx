@@ -106,6 +106,19 @@ useEffect(()=>{
     },2000)
 },[])
 
+const [specificdata,setSpecifcdata]=useState('')
+const handleViewClick = (itemId) => {
+    // You can set a state variable to control the visibility of the modal
+    setSpecifcdata(itemId);
+};
+
+const closeViewModal = () => {
+    // Close the modal by setting specificData to an empty string or null
+    setSpecifcdata("");
+};
+
+
+
 
 return (
     
@@ -115,8 +128,8 @@ return (
     <Card className="h-full w-full overflow-scroll">
     {
         data ? <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <img src="./man.png" style={{ width: "200px", marginTop: 20 }} alt="" />
-            <h1>User Email:{logindata ? logindata.ValidUserOne.email : ""}</h1>
+          
+          
         </div> : <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
             Loading... &nbsp;
             <CircularProgress />
@@ -572,10 +585,11 @@ return (
                         className="font-normal"
                     >
                         {item.remark}
+                   
                     </Typography>
                 </td>
                   <td className={classes}>
-               <Link to='/view'>
+                  <Link to={`/view/${item._id}`}>
                     <Typography
                         as="a"
                        
@@ -583,20 +597,23 @@ return (
                         color="blue-gray"
                         className="font-medium"
                     >
+                   
                       <button
                     type="submit"
                     className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    
+                    onClick={() => handleViewClick(item._id)}
                     >
                      View
                     </button>
-                   
+                    
                     </Typography>
                     </Link>
-                   
+                    
 
                   
              </td>
+            
+
                 <td className={classes}>
                 <Link to="/getImage">
                     <Typography
@@ -657,7 +674,9 @@ return (
             
             )
          })}
-         
+         {specificdata && (  
+                <ViewPage itemId={specificdata} onClose={closeViewModal} />
+            )}
         </tbody>
       </table>
 

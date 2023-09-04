@@ -71,7 +71,7 @@ function App() {
               <Route path="/form" element={<FormData />} />
               <Route path="/image" element={<ImageUploadForm />} />
               <Route path="/result-table" element={<DefaultTable />} />
-              <Route path="/view" element={<ViewPage />} />
+              <Route path="/view/:itemId" element={<ViewPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/getImage" element={<ImageTable />} />
               <Route path="/register" element={<Register />} />
