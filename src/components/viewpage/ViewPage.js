@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Error from './../loginPage/Error';
+
 
 const ViewPage = () => {
     const { itemId } = useParams();
@@ -15,7 +15,7 @@ const ViewPage = () => {
             try {
                 const res = await axios.get(`http://localhost:8000/api/getDetails/${itemId}`);
                 setFormData(res.data.item);
-                console.log(res.data);
+                console.log(`Fectching data completed Successfully`);
 
             } catch (error) {
                 console.error(`Error in fetching data: ${error}`);
@@ -25,7 +25,7 @@ const ViewPage = () => {
         fetchData(); // Call fetchData when the component mounts
     }, [itemId]);
 
-    console.log(`FormData:`, formData);
+
 
     const handlePrint = () => {
         // Open the print dialog when the button is clicked
