@@ -8,7 +8,7 @@ const title = [
     },
     {
         choose: "Registration-Page",
-        to: "/register"
+        to: "/registration"
     }
 ];
 
