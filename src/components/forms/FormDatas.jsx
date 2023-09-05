@@ -1203,7 +1203,7 @@ const handleSubmit=async (event)=>{
                   <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                     Cancel
                   </button>
-             
+             <Link to='/'>
                     <button
                       type="submit"
                       onClick={handleSubmit}
@@ -1212,7 +1212,7 @@ const handleSubmit=async (event)=>{
                       Save
                     </button>
                     
-                    
+              </Link>
         
                 </div>
             
