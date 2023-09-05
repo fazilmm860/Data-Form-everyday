@@ -47,7 +47,7 @@ const ForgotPassword = () => {
                 position: "top-center"
             });
         } else {
-            const res = await fetch(`http://localhost:8000/api/${id}/${token}`, {
+            const res = await fetch(`https://everyday-finance-solution-crm-backend.onrender.com/api/${id}/${token}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

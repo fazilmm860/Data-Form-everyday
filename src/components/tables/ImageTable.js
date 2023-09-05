@@ -30,7 +30,7 @@ const ImageTable = () => {
             <div className="grid grid-cols-3 gap-4">
                 {images.map((image) => (
                     <div key={image._id} className="border p-2">
-                        <img src={`http://localhost:8000/${image.filepath}`} alt={image.filename} className="max-w-full h-auto" />
+                        <img src={`https://everyday-finance-solution-crm-backend.onrender.com/${image.filepath}`} alt={image.filename} className="max-w-full h-auto" />
                         <p className="mt-2">{image.filename}</p>
                     </div>
                 ))}

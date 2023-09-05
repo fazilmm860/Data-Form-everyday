@@ -28,7 +28,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
       }
       const handleEditSave=async(editedData)=>{
         try {
-          const url=`http://localhost:8000/api`
+          const url=`https://everyday-finance-solution-crm-backend.onrender.com/api`
           const response=await axios.put(`${url}/edit/${editedData._id}`,editedData)
           console.log(response.data.message);
           
@@ -50,7 +50,7 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
   
     const handleDeleteClick = async (itemId) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/delete/${itemId}`);
+            const response = await axios.delete(`https://everyday-finance-solution-crm-backend.onrender.com/api/delete/${itemId}`);
             console.log(response.data.message);
             // Optionally, you can fetch data again after deletion
             fetchData();
@@ -64,7 +64,7 @@ useEffect(()=>{
 const fetchData=async()=>{
     try{
         
-        const response=await axios.get(`http://localhost:8000/api/getdata`)
+        const response=await axios.get(`https://everyday-finance-solution-crm-backend.onrender.com/api/getdata`)
         setFormData(response.data.message)
         console.log(Array.isArray(response.data.message)); 
         console.log(response.data);
@@ -82,7 +82,7 @@ const history=useNavigate();
 const DashboardValid=async()=>{
     let token=localStorage.getItem("userdatatoken");
 
-    const res=await fetch("http://localhost:8000/api/validuser",{
+    const res=await fetch("https://everyday-finance-solution-crm-backend.onrender.com/api/validuser",{
         method:"GET",
         headers:{
             "Content-Type":"application/json",

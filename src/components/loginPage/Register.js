@@ -63,7 +63,7 @@ const Register = () => {
                 position: "top-center"
             })
         } else {
-            const data = await fetch("http://localhost:8000/api/register", {
+            const data = await fetch("https://everyday-finance-solution-crm-backend.onrender.com/api/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

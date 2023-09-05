@@ -10,7 +10,7 @@ const ImageGrid = () => {
 
     const fetchImages = async () => {
         try {
-            const url = `http://localhost:5000/`
+            const url = `https://everyday-finance-solution-crm-backend.onrender.com/`
             const response = await axios.get(`${url}images/upload`)
             setImages(response.data);
         } catch (error) {

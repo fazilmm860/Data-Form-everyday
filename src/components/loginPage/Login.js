@@ -43,7 +43,7 @@ const Login = () => {
 
             // console.log("user login succesfully done");
 
-            const data = await fetch(`http://localhost:8000/api/login`, {
+            const data = await fetch(`https://everyday-finance-solution-crm-backend.onrender.com/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
