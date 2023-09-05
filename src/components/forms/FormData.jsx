@@ -304,8 +304,8 @@ const handleSubmit=async (event)=>{
     }
     
        
-        const url=`https://everyday-finance-solution-crm-backend.onrender.com/api`
-        const response=await axios.post(`${url}/sendData`,formDataToSend)
+        
+        const response=await axios.post(`https://everyday-finance-solution-crm-backend.onrender.com/api/sendData`,formDataToSend)
         console.log('formDataToSend:', formDataToSend);
         if(response.status===201){
           console.log(`Data submitted succesfully `);
