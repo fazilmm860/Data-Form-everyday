@@ -28,49 +28,57 @@ const Login = () => {
         const { email, password } = inpval;
 
         if (email === "") {
-            toast.error("email is required!", {
+            toast.error("Email is required!", {
                 position: "top-center"
             });
+            return;
         } else if (!email.includes("@")) {
-            toast.warning("includes @ in your email!", {
+            toast.warning("Email must include '@'!", {
                 position: "top-center"
             });
+            return;
         } else if (password.length < 6) {
-            toast.error("password must be 6 char!", {
+            toast.error("Password must be at least 6 characters!", {
                 position: "top-center"
             });
-        } else {
+            return;
+        }
 
-            // console.log("user login succesfully done");
-
-            const data = await fetch(`https://everyday-finance-solution-crm-backend.onrender.com/api/login`, {
+        try {
+            const response = await fetch(`https://everyday-finance-solution-crm-backend.onrender.com/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-
                 },
                 body: JSON.stringify({
-                    email, password
+                    email,
+                    password
                 })
             });
-            if (!data.ok) {
-                console.error('Request failed:', data.status, data.statusText);
+
+            if (!response.ok) {
+                throw new Error(`Request failed: ${response.status} ${response.statusText}`);
             }
 
-            const res = await data.json();
+            const data = await response.json();
 
-
-            if (res.status === 201) {
-                localStorage.setItem("usersdatatoken", res.result.token);
-                history("/admin")
-                setInpval({ ...inpval, email: "", password: "" })
+            if (data.status === 201) {
+                localStorage.setItem("usersdatatoken", data.result.token);
+                history("/admin");
+                setInpval({ ...inpval, email: "", password: "" });
             } else {
-                toast.error("Invalid Credentials", {
+                toast.error("Incorrect email or password", {
                     position: "top-center"
                 });
             }
+        } catch (error) {
+            console.error("An error occurred:", error);
+            toast.error("An error occurred while logging in", {
+                position: "top-center"
+            });
         }
-    }
+    };
+
     return (
         <>
             <div className="flex justify-center items-center h-screen">
