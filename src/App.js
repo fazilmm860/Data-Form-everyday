@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import DefaultTable from './components/tables/DefaultTable.jsx';
 import { Switch } from '@material-tailwind/react';
 import HomePage from './components/HomePage';
-import FormData from './components/forms/FormData';
+import FormDatas from './components/forms/FormDatas';
 import ImageUploadForm from './components/forms/ImageUploadForm';
 import ImageTable from './components/tables/ImageTable'
 import ImageGrid from './components/tables/ImageGrid';
@@ -24,7 +24,7 @@ import RegistrationLink from './components/loginPage/Registration';
 
 
 function App() {
-  const { itemId } = useParams();
+
   const [data, setData] = useState(false);
 
   const { logindata, setLoginData } = useContext(LoginContext)
@@ -68,7 +68,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/form" element={<FormData />} />
+              <Route path="/form" element={<FormDatas />} />
               <Route path="/image" element={<ImageUploadForm />} />
               <Route path="/result-table" element={<DefaultTable />} />
               <Route path="/view/:itemId" element={<ViewPage />} />
