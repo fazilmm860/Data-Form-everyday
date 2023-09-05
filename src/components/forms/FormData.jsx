@@ -370,6 +370,7 @@ const handleSubmit=async (event)=>{
             otherAcc: '',
             remark: ''
           })
+          window.location.reload();
         }
 
   }catch(error){
@@ -1202,7 +1203,7 @@ const handleSubmit=async (event)=>{
                   <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                     Cancel
                   </button>
-                 
+             
                     <button
                       type="submit"
                       onClick={handleSubmit}
@@ -1210,6 +1211,7 @@ const handleSubmit=async (event)=>{
                     >
                       Save
                     </button>
+                    
                     
         
                 </div>
