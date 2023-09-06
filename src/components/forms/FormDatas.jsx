@@ -554,8 +554,8 @@ const handleSubmit=async (event)=>{
                   type='date'
                   id="dateOfBirth"
                   name='dateOfBirth'
-                  selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
-                  onChange={handleDateOfBirthChange}
+                  value={formData.dateOfBirth}
+                  onChange={handleInputChange}
                   className="mt-1 p-2 border rounded-md w-full"
                 />
               </div>
