@@ -104,9 +104,7 @@ const addressdetails=[
   },
 ]
 const salary=[
-  {
-    type:'Select'
-  },
+
   {
     type:'Private Ltd'
   },
@@ -133,9 +131,7 @@ const salary=[
   },
 ]
 const self=[
-  {
-    type:'Select'
-  },
+
   {
     type:'Sole Proprietorship'
   },
@@ -386,7 +382,7 @@ const handleSubmit=async (event)=>{
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
     <div className="border rounded-lg shadow-lg p-8 bg-white">
-      <form onSubmit={handleSubmit} method="POST" className='flex flex-col justify-center items-center'>
+      <div className='flex flex-col justify-center items-center'>
       <div className="space-y-12 ">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Credit Card Application Form</h2>
@@ -1208,7 +1204,7 @@ const handleSubmit=async (event)=>{
                   <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                     Cancel
                   </button>
-             <Link to='/'>
+             
                     <button
                       type="submit"
                       onClick={handleSubmit}
@@ -1216,15 +1212,12 @@ const handleSubmit=async (event)=>{
                     >
                       Save
                     </button>
-                    
-              </Link>
-        
                 </div>
-            
+            </div>
      </div>
      </div>
     </div>
-    </form>
+    
     </div>
     </div>
   )
