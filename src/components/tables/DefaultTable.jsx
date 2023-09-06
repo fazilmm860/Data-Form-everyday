@@ -53,17 +53,21 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
         setEditData(null)
       };
       
-  
-    const handleDeleteClick = async (itemId) => {
+      const handleDeleteClick = async (itemId) => {
         try {
+          const shouldDelete = window.confirm('Are you sure you want to delete this item?'); // Confirmation prompt
+      
+          if (shouldDelete) {
             const response = await axios.delete(`https://everyday-finance-solution-crm-backend.onrender.com/api/delete/${itemId}`);
             console.log(response.data.message);
             // Optionally, you can fetch data again after deletion
             fetchData();
+          }
         } catch (error) {
-            console.error(`Error in deleting data: ${error}`);
+          console.error(`Error in deleting data: ${error}`);
         }
-    };
+      };
+      
 useEffect(()=>{
     fetchData();
 },[]);
