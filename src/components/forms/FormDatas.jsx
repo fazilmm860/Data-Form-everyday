@@ -550,21 +550,16 @@ const handleSubmit=async (event)=>{
                Date of Birth
               </label>
               <div className="mt-2">
-               
-                  <DatePicker
-                    id="dateOfBirth"
-                    name='dateOfBirth'
-                    selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
-                    onChange={handleDateOfBirthChange}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd/MM/yyyy"
-                    className="mt-1 p-2 border rounded-md w-full"
-                  />
-                
-              </div> 
+                <input
+                  type='date'
+                  id="dateOfBirth"
+                  name='dateOfBirth'
+                  selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
+                  onChange={handleDateOfBirthChange}
+                  className="mt-1 p-2 border rounded-md w-full"
+                />
+              </div>
+
             </div>
             
             <div className="sm:col-span-4">
