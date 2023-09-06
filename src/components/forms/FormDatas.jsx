@@ -304,7 +304,7 @@ const handleSubmit=async (event)=>{
         const response=await axios.post(`https://everyday-finance-solution-crm-backend.onrender.com/api/sendData`,formDataToSend)
         console.log('formDataToSend:', formDataToSend);
         if(response.status===201){
-          const shouldSave = window.confirm('Are you sure you want to save the data?'); // Confirmation prompt
+          const shouldSave = window.confirm('Are you sure you want to save the data and send this to mirshad?'); // Confirmation prompt
           
           if (shouldSave) {
           console.log(`Data submitted succesfully `);

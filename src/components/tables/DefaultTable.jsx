@@ -26,22 +26,28 @@ const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"F
     const handleEditClick=(data)=>{
         setEditData(data)
       }
-      const handleEditSave=async(editedData)=>{
+      const handleEditSave = async (editedData) => {
         try {
-          const url=`https://everyday-finance-solution-crm-backend.onrender.com/api`
-          const response=await axios.put(`${url}/edit/${editedData._id}`,editedData)
-          console.log(response.data.message);
-          
-          const updatedFormData=formData.map((item)=>
-          item._id === editedData._id ? editedData :item
-          )
-          setFormData(updatedFormData)
-          console.log(`updated successfully ${updatedFormData}`); 
-          setEditData(null)
+          const url = `https://everyday-finance-solution-crm-backend.onrender.com/api`;
+      
+          const shouldSave = window.confirm('Are you sure you want to save the edited data and send this to mirshad?'); // Confirmation prompt
+      
+          if (shouldSave) {
+            const response = await axios.put(`${url}/edit/${editedData._id}`, editedData);
+            console.log(response.data.message);
+      
+            const updatedFormData = formData.map((item) =>
+              item._id === editedData._id ? editedData : item
+            );
+            setFormData(updatedFormData);
+            console.log(`Updated successfully ${JSON.stringify(updatedFormData)}`);
+            setEditData(null);
+          }
         } catch (error) {
           console.error(`Error in updating data: ${error}`);
         }
       }
+      
 
       const handleEditCancel=()=>{
         setEditData(null)
