@@ -370,7 +370,7 @@ const handleSubmit=async (event)=>{
             otherAcc: '',
             remark: ''
           })
-          window.location.reload();
+         
         }
       }
 
