@@ -5,6 +5,8 @@ import axios from 'axios';
 import ResidenceAddressForm from './ResidenceAddressForm';
 import PermanentAddressForm from './PermanentAddressForm';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import e from 'express';
 
 
 
@@ -290,92 +292,264 @@ setFormData((prevData)=>({
 const handleSubmit=async (event)=>{
   
   try{
-    let formDataToSend = formData;
+      event.preventDefault();// prevent the default form submmision
+
+      //Validation check
+    if(formData.exeName.trim()===''){
+      toast.warning('Please enter the executive name',{
+        position:'top-center'
+      })
+    }else if(formData.dseCode.trim()===''){
+      toast.warning('Please enter the  DSE-Code',{
+        position:'top-center'
+      })
+    }else if(formData.cardSelect==='Select'){
+      toast.warning(`Please Select the Card`,{
+        position:'top-center'
+      })
+    }else if(formData.surrogate==='Select'){
+      toast.warning('Please Select the Surrogate',{
+        position:'top-center'
+      })
+    }else if(formData.custName.firstName===''){
+      toast.warning('Please enter the First Name',{
+        position:'top-center'
+      })
+    }else if(formData.custName.lastName===''){
+      toast.warning("Please enter the Last Name",{
+        position:'top-center'
+      })
+    }else if(formData.dateOfBirth===''){
+      toast.warning("Please Select the DOB",{
+        position:'top-center'
+      })
+    }else if(formData.gender===''){
+      toast.warning("please Select the Gender",{
+        position:'top-center'
+      })
+    }else if(formData.maritalStatus===''){
+      toast.warning("please Select the Marital Status",{
+        position:'top-center'
+      })
+    }else if (formData.spouseName===''){
+      toast.warning('Please enter your Spouse Name',{
+        position:"top-center"
+      })
+    }else if(formData.qualification===''){
+      toast.warning('Please Select your Qualification',{
+        postion:'top-center'
+      })
+    }else if(formData.other===''){
+      toast.warning('Please enter the Qualification',{
+        position:'top-center'
+      })
+    }else if (formData.panNumber===''){
+      toast.warning('Please enter the  Pan Number',{
+        position:'top-center'
+      })
+    }else if(formData.mobileNumber===''){
+      toast.warning('Please enter your Mobile Number',{
+        position:'top-center'
+      })
+    }else if (formData.email===''){
+      toast.warning('Please enter your Email',{
+        position:'top-center'
+      })
+    }else if(formData.residenceAddress.flat===''){
+      toast.warning('Please add flat Number or House Name',{
+        position:'top-center'
+      })
+    }else if(formData.residenceAddress.street===''){
+      toast.warning('Please add Street',{
+        position:'top-center'
+      })
+    }else if(formData.residenceAddress.city===''){
+      toast.warning('Please add City',{
+        position:'top-center'
+      })
+    }else if(formData.residenceAddress.state===''){
+      toast.warning('Please add street',{
+        position:'top-center'
+      })
+    }else if (formData.residenceAddress.landMark===''){
+      toast.warning('Please add landMark',{
+        position:'top-center'
+      })
+    }else if(formData.residenceAddress.pincode===''){
+      toast.warning('Please add Pincode',{
+        position:'top-center'
+      })
+    }else if(formData.permanentAddress.flat===''){
+      toast.warning('please add flat Number or House Name',{
+        postion:'top-center'
+      })
+    }else if(formData.permanentAddress.street===''){
+      toast.warning('Please add street ',{
+        position:'top-center'
+      })
+    }else if(formData.permanentAddress.city===''){
+      toast.warning('Please add city',{
+        position:'top-center'
+      })
+    }else if(formData.permanentAddress.state===''){
+      toast.warning('Please add state',{
+        position:'top-center'
+      })
+    }else if(formData.permanentAddress.landMark===''){
+      toast.warning('Please add landMark',{
+        position:'top-center'
+      })
+    }else if (formData.permanentAddress.pincode===''){
+      toast.warning('Please add Pincod',{
+        position:'top-center'
+      })
+    }else if (formData.periodResidence ===''){
+      toast.warning('Please add How long you are staying there?',{
+        position:'top-center'
+      })
+    }else if(formData.residenceIs ===''){
+      toast.warning('Please Residence Is',{
+        position:'top-center'
+      })
+    }else if(formData.companyName === ''){
+      toast.warning('Please enter your Company Name',{
+        position:'top-center'
+      })
+    }else if(formData.companyAddress.flat===''){
+      toast.warning(`Please enter Flat No or House Name`,{
+        position:'top-center'
+      })
+    }else if(formData.companyAddress.street === ''){
+      toast.warning('Please enter the street',{
+        position:'top-center'
+      })
+    }else if(formData.companyAddress.city === ''){
+      toast.warning('Please enter the city',{
+        position:'top-center'
+      })
+    }else if(formData.companyAddress.state ===''){
+      toast.warning('Please enter the State',{
+        position:'top-center'
+      })
+    }else if(formData.companyAddress.landMark === ''){
+      toast.warning('Please enter the Landmark',{
+        position:'top-center'
+      })
+    }else if(formData.companyAddress.pincode === ''){
+      toast.warning(`Please enter the Pincode`,{
+        position:'top-center'
+      })
+    }else if(formData.designation === ''){
+      toast.warning('Please enter the Designation',{
+        position:'top-center'
+      })
+    }else if(formData.employmentType ==='Select'){
+      toast.warning(`Please Select the Employment Type `,{
+        position:'top-center'
+      })
+    }else if(formData.employmentDetails === 'Select'){
+      toast.warning(`Please Select the Employment Details`,{
+        position:'top-center'
+      })
+    }
+    else{
+      let formDataToSend = formData;
     
-    if (formData.sameAsAbove) {
-      formDataToSend = {
-        ...formDataToSend,
-        permanentAddress: formData.residenceAddress,
-      };
+      if (formData.sameAsAbove) {
+        formDataToSend = {
+          ...formDataToSend,
+          permanentAddress: formData.residenceAddress,
+        };
+      }
+      
+         
+          
+          const response=await axios.post(`https://everyday-finance-solution-crm-backend.onrender.com/api/sendData`,formDataToSend)
+          console.log('formDataToSend:', formDataToSend);
+          if(response.status===201){
+            const shouldSave = window.confirm('Are you sure you want to save the data and send this to mirshad?'); // Confirmation prompt
+            
+            if (shouldSave) {
+            console.log(`Data submitted succesfully `);
+  
+            setFormData({
+              date: new Date().toLocaleDateString(),
+              exeName: '',
+              dseCode: '',
+              cardSelect: '',
+              surrogate: '',
+              custName: {
+                  firstName: '',
+                  middleName: '',
+                  lastName: ''
+              },
+              dateOfBirth: '',
+              gender: '',
+              maritalStatus: '',
+              spouseName:'',
+              qualification: '',
+              other: '',
+              panNumber: '',
+              mobileNumber:'',
+              altMobileNumber: '',
+              email:'',
+              residenceAddress: {
+                  flat:'',
+                  street:'',
+                  city:'',
+                  state:'',
+                  landMark:'',
+                  pincode:''
+              },
+              sameAsAbove: false,
+              permanentAddress: {
+                  flat: '',
+                  street: '',
+                  city: '',
+                  state: '',
+                  landMark: '',
+                  pincode: ''
+              },
+              periodResidence: '',
+              residenceIs: '',
+              companyName: '',
+              companyAddress: {
+                  flat: '',
+                  street: '',
+                  city: '',
+                  state: '',
+                  landMark: '',
+                  pincode: ''
+              },
+              designation: '',
+              telNo: '',
+              officeEmail: '',
+              employmentType: '',
+              employmentDetails: '',
+              aadharFront:null,
+              aadharBack:null,
+              panCard:null,
+              hdfcAcc: '',
+              otherAcc: '',
+              remark: ''
+            })
+           
+          }
+        }
+         toast.success('Your Form is Successfully Submitted to Mirshad',{
+          position:'top-center'
+          })
+  
     }
     
-       
-        
-        const response=await axios.post(`https://everyday-finance-solution-crm-backend.onrender.com/api/sendData`,formDataToSend)
-        console.log('formDataToSend:', formDataToSend);
-        if(response.status===201){
-          const shouldSave = window.confirm('Are you sure you want to save the data and send this to mirshad?'); // Confirmation prompt
-          
-          if (shouldSave) {
-          console.log(`Data submitted succesfully `);
 
-          setFormData({
-            date: new Date().toLocaleDateString(),
-            exeName: '',
-            dseCode: '',
-            cardSelect: '',
-            surrogate: '',
-            custName: {
-                firstName: '',
-                middleName: '',
-                lastName: ''
-            },
-            dateOfBirth: '',
-            gender: '',
-            maritalStatus: '',
-            spouseName:'',
-            qualification: '',
-            other: '',
-            panNumber: '',
-            mobileNumber:'',
-            altMobileNumber: '',
-            email:'',
-            residenceAddress: {
-                flat:'',
-                street:'',
-                city:'',
-                state:'',
-                landMark:'',
-                pincode:''
-            },
-            sameAsAbove: false,
-            permanentAddress: {
-                flat: '',
-                street: '',
-                city: '',
-                state: '',
-                landMark: '',
-                pincode: ''
-            },
-            periodResidence: '',
-            residenceIs: '',
-            companyName: '',
-            companyAddress: {
-                flat: '',
-                street: '',
-                city: '',
-                state: '',
-                landMark: '',
-                pincode: ''
-            },
-            designation: '',
-            telNo: '',
-            officeEmail: '',
-            employmentType: '',
-            employmentDetails: '',
-            aadharFront:null,
-            aadharBack:null,
-            panCard:null,
-            hdfcAcc: '',
-            otherAcc: '',
-            remark: ''
-          })
-         
-        }
-      }
 
+    
   }catch(error){
-    console.log(error);        
+    console.log(error);   
+    toast.error('Your Form is not Submitted due to some error',{
+      position:'top-center'
+    })     
   }
 
 }
@@ -1212,7 +1386,7 @@ const handleSubmit=async (event)=>{
      </div>
      </div>
     </div>
-    
+    <ToastContainer/>
     </div>
     </div>
   )
