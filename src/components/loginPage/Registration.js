@@ -19,7 +19,7 @@ const RegistrationLink = () => {
                 position: "top-center"
             });
         } else {
-            const res = await fetch("https://everyday-finance-solution-crm-backend.onrender.com/api/registerationlink", {
+            const res = await fetch("https://crm-for-every-day-finance-solution.onrender.com/api/registerationlink", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

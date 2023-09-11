@@ -13,7 +13,7 @@ const ViewPage = () => {
         console.log("Component mounted. Fetching data...");
         const fetchData = async () => {
             try {
-                const res = await axios.get(`https://everyday-finance-solution-crm-backend.onrender.com/api/getDetails/${itemId}`);
+                const res = await axios.get(`https://crm-for-every-day-finance-solution.onrender.com/api/getDetails/${itemId}`);
                 setFormData(res.data.item);
                 console.log(`Fectching data completed Successfully`);
 

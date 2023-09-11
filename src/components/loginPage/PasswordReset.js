@@ -21,7 +21,7 @@ const PasswordReset = () => {
                 position: "top-center"
             });
         } else {
-            const res = await fetch("https://everyday-finance-solution-crm-backend.onrender.com/api/sendpasswordlink", {
+            const res = await fetch("https://crm-for-every-day-finance-solution.onrender.com/api/sendpasswordlink", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -26,7 +26,7 @@ const ImageUploadForm = () => {
         formDataImage.append('signature', signature);
 
         try {
-            const url = `https://everyday-finance-solution-crm-backend.onrender.com/`
+            const url = `https://crm-for-every-day-finance-solution.onrender.com/`
             const response = await axios.post(`${url}images/upload`, formDataImage, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

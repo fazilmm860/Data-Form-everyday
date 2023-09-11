@@ -45,7 +45,7 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch(`https://everyday-finance-solution-crm-backend.onrender.com/api/login`, {
+            const response = await fetch(`https://crm-for-every-day-finance-solution.onrender.com/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
